@@ -54,7 +54,6 @@
 
         body {
             height: 100%;
-            /* Use dynamic viewport height for mobile browsers that hide the address bar */
             min-height: 100dvh;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-size: var(--font-size-base);
@@ -62,7 +61,6 @@
             color: var(--text);
             line-height: 1.5;
             overflow: hidden;
-            /* Prevent body scroll; pages handle their own scroll */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -70,11 +68,9 @@
             padding: 0;
         }
 
-        /* App container fills the entire screen */
         .app-container {
             width: 100%;
             height: 100%;
-            /* Fallback */
             height: 100dvh;
             max-width: 100%;
             max-height: 100dvh;
@@ -90,7 +86,6 @@
             padding-right: var(--safe-right);
         }
 
-        /* On wider screens (iPad landscape / desktop), constrain max-width for readability */
         @media (min-width: 768px) {
             .app-container {
                 max-width: 520px;
@@ -110,7 +105,6 @@
             }
         }
 
-        /* Each page fills the container and scrolls internally */
         .page {
             flex: 1;
             display: flex;
@@ -129,7 +123,6 @@
             display: none !important;
         }
 
-        /* Scrollbar styling */
         .page::-webkit-scrollbar {
             width: 4px;
         }
@@ -141,7 +134,6 @@
             border-radius: 4px;
         }
 
-        /* Typography */
         h2 {
             font-size: var(--font-size-2xl);
             font-weight: 700;
@@ -174,7 +166,6 @@
             display: inline-block;
         }
 
-        /* Form elements */
         input[type="text"],
         input[type="password"],
         input[type="datetime-local"],
@@ -229,7 +220,6 @@
             flex-shrink: 0;
         }
 
-        /* Buttons */
         button {
             display: inline-flex;
             align-items: center;
@@ -273,7 +263,6 @@
             width: auto;
         }
 
-        /* Card */
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -336,7 +325,6 @@
             border: 1px solid var(--border);
         }
 
-        /* Verification popup */
         .verify-popup {
             position: fixed;
             top: 0;
@@ -385,7 +373,6 @@
             margin-bottom: 0;
         }
 
-        /* Verification section in found page */
         #verificationSection {
             background: #fef9e7;
             border-radius: var(--radius-sm);
@@ -401,7 +388,63 @@
             font-weight: 700;
         }
 
-        /* Responsive adjustments */
+        /* Dino Game Styles */
+        .dino-game-wrapper {
+            background: #fafafa;
+            border-radius: var(--radius);
+            padding: 12px 10px 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .dino-game-wrapper canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #222;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            background: #fff;
+            image-rendering: auto;
+        }
+        .dino-score-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 6px;
+            padding: 0 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .dino-score-row span {
+            font-weight: 700;
+            color: #555;
+        }
+        .dino-msg {
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-top: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 20px;
+        }
+
+        .game-btn {
+            background: #4a7c59;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+        }
+        .game-btn:active {
+            background: #3d6a4b;
+            transform: scale(0.97);
+        }
+
         @media (max-width: 380px) {
             .page {
                 padding: 14px 12px 20px;
@@ -421,6 +464,15 @@
             button {
                 padding: 12px 16px;
                 font-size: 14px;
+            }
+            .dino-game-wrapper {
+                padding: 8px 6px 6px;
+            }
+            .dino-score-row {
+                font-size: 11px;
+            }
+            .dino-msg {
+                font-size: 11px;
             }
         }
 
@@ -444,9 +496,17 @@
                 padding: 14px 16px;
                 font-size: 16px;
             }
+            .dino-game-wrapper {
+                padding: 16px 14px 10px;
+            }
+            .dino-score-row {
+                font-size: 14px;
+            }
+            .dino-msg {
+                font-size: 14px;
+            }
         }
 
-        /* Utility */
         #lostResults {
             flex: 1;
             overflow-y: auto;
@@ -489,6 +549,7 @@
             <p style="color:#4a5568;">Welcome, <span id="displayUsername">...</span>!</p>
             <button id="goLostBtn"><span class="emoji-icon">🔎</span> Lost something?</button>
             <button id="goFoundBtn"><span class="emoji-icon">📦</span> I found an item</button>
+            <button id="goDinoGameBtn" class="game-btn"><span class="emoji-icon">🦖</span> Dino Jump Game</button>
             <button id="logoutFromHomeBtn" style="background:#b23b3b;"><span class="emoji-icon">🚪</span> Log out</button>
         </div>
 
@@ -539,6 +600,21 @@
             <p id="foundMessage" style="color:#2c3e50;"></p>
         </div>
 
+        <!-- DINO GAME PAGE -->
+        <div id="dinoGamePage" class="page hidden">
+            <h2><span class="emoji-icon">🦖</span> Dino Jump</h2>
+            <p style="color:#4a5568;">Tap the game area or press <strong>Space</strong> to jump!</p>
+            <div class="dino-game-wrapper" id="dino-game">
+                <div class="dino-score-row">
+                    <span>🏆 HI <span id="dhi">0</span></span>
+                    <span>⭐ <span id="dsc">0</span></span>
+                </div>
+                <canvas id="dc" width="700" height="130"></canvas>
+                <p class="dino-msg" id="dm">Press space / tap to start</p>
+            </div>
+            <button id="backToHomeFromGame" style="background:#8899aa;flex-shrink:0;">⬅ Back to Home</button>
+        </div>
+
         <!-- VERIFY POPUP -->
         <div id="verifyPopup" class="verify-popup hidden">
             <div class="popup-content">
@@ -563,14 +639,22 @@
             const homePage = document.getElementById('homePage');
             const lostPage = document.getElementById('lostPage');
             const foundPage = document.getElementById('foundPage');
+            const dinoGamePage = document.getElementById('dinoGamePage');
             const verifyPopup = document.getElementById('verifyPopup');
             const authMessage = document.getElementById('authMessage');
             let currentVerifyingItemId = null;
 
+            const allPages = [loginPage, homePage, lostPage, foundPage, dinoGamePage];
+
             function showPage(page) {
-                [loginPage, homePage, lostPage, foundPage].forEach(p => p.classList.add('hidden'));
+                // Stop dino game if navigating away from game page
+                if (dinoGamePage && !dinoGamePage.classList.contains('hidden') && page !== dinoGamePage) {
+                    if (typeof window.stopDinoGame === 'function') {
+                        window.stopDinoGame();
+                    }
+                }
+                allPages.forEach(p => p.classList.add('hidden'));
                 page.classList.remove('hidden');
-                // Scroll to top when switching pages
                 page.scrollTop = 0;
             }
 
@@ -627,12 +711,15 @@
                 loadLostItems('');
             });
             document.getElementById('goFoundBtn').addEventListener('click', () => showPage(foundPage));
+            document.getElementById('goDinoGameBtn').addEventListener('click', () => showPage(dinoGamePage));
             document.getElementById('logoutFromHomeBtn').addEventListener('click', async () => {
+                if (typeof window.stopDinoGame === 'function') window.stopDinoGame();
                 await auth.logOut();
                 checkSession();
             });
             document.getElementById('backToHomeFromLost').addEventListener('click', () => showPage(homePage));
             document.getElementById('backToHomeFromFound').addEventListener('click', () => showPage(homePage));
+            document.getElementById('backToHomeFromGame').addEventListener('click', () => showPage(homePage));
 
             // Lost page search
             document.getElementById('searchLostBtn').addEventListener('click', () => {
@@ -800,7 +887,6 @@
                             answerInput.disabled = true;
                             submitBtn.disabled = true;
                         } else {
-                            // update attempt status
                             try {
                                 const query = new Parse.Query(Parse.Object.extend(
                                     "LostItem"));
@@ -883,7 +969,6 @@
                         photoName
                     });
                     msg.textContent = '✅ Item posted! Thank you.';
-                    // Reset form
                     document.getElementById('foundColor').value = '';
                     document.getElementById('foundModel').value = '';
                     document.getElementById('foundAppearance').value = '';
@@ -900,6 +985,162 @@
 
             checkSession();
         });
+    </script>
+
+    <!-- Dino Jump Game Script -->
+    <script>
+        (function() {
+            const cv = document.getElementById('dc');
+            const ctx = cv.getContext('2d');
+            const scEl = document.getElementById('dsc');
+            const hiEl = document.getElementById('dhi');
+            const msg = document.getElementById('dm');
+            const gamePage = document.getElementById('dinoGamePage');
+            const W = 700,
+                H = 130,
+                GR = 100;
+            let d, ca, sc, hi = 0,
+                spd, st, lt, fs;
+            let currentRaf = null;
+
+            function reset() {
+                d = { x: 60, y: GR, w: 22, h: 26, vy: 0, jmp: false, fr: 0, ft: 0 };
+                ca = [];
+                sc = 0;
+                fs = 0;
+                spd = 4;
+                st = 'idle';
+                lt = null;
+            }
+
+            function jump() {
+                if (!gamePage || !gamePage.classList.contains('hidden')) {
+                    if (st === 'idle' || st === 'dead') {
+                        start();
+                        return;
+                    }
+                    if (!d.jmp) {
+                        d.vy = -11;
+                        d.jmp = true;
+                    }
+                }
+            }
+
+            function start() {
+                st = 'running';
+                msg.textContent = '';
+                d.jmp = false;
+                d.vy = 0;
+                d.y = GR;
+                ca = [];
+                sc = 0;
+                fs = 0;
+                spd = 4;
+                lt = null;
+                if (currentRaf) cancelAnimationFrame(currentRaf);
+                currentRaf = requestAnimationFrame(loop);
+            }
+
+            function loop(ts) {
+                // Check if game page is hidden — if so, pause and clean up
+                if (gamePage && gamePage.classList.contains('hidden')) {
+                    if (currentRaf) {
+                        cancelAnimationFrame(currentRaf);
+                        currentRaf = null;
+                    }
+                    st = 'idle';
+                    msg.textContent = 'Press space / tap to start';
+                    return;
+                }
+
+                if (!lt) lt = ts;
+                const dt = Math.min((ts - lt) / 16.67, 3);
+                lt = ts;
+                ctx.clearRect(0, 0, W, H);
+                const col = '#333';
+                d.vy += 0.6 * dt;
+                d.y += d.vy * dt;
+                if (d.y >= GR) { d.y = GR;
+                    d.vy = 0;
+                    d.jmp = false; }
+                d.ft += dt;
+                if (d.ft > 8) { d.fr++;
+                    d.ft = 0; }
+                fs += dt;
+                if (fs >= 5) { sc += Math.floor(fs / 5);
+                    fs %= 5; }
+                spd = 4 + sc * 0.012;
+                if (Math.random() < 0.012 * dt && (ca.length === 0 || ca[ca.length - 1].x < W - 180)) {
+                    const h = 20 + Math.random() * 22,
+                        w = 10 + Math.random() * 8;
+                    ca.push({ x: W, w, h, y: GR + 26 - h });
+                }
+                for (let i = ca.length - 1; i >= 0; i--) {
+                    ca[i].x -= spd * dt;
+                    if (ca[i].x + ca[i].w < 0) { ca.splice(i, 1); continue; }
+                    if (d.x + d.w - 4 > ca[i].x + 2 && d.x + 4 < ca[i].x + ca[i].w - 2 && d.y + d.h > ca[i].y +
+                        2) {
+                        st = 'dead';
+                        if (sc > hi) { hi = sc;
+                            hiEl.textContent = hi; }
+                        scEl.textContent = sc;
+                        msg.textContent = 'Game over — press space / tap to restart';
+                        currentRaf = null;
+                        return;
+                    }
+                    ctx.fillStyle = col;
+                    ctx.fillRect(ca[i].x, ca[i].y, ca[i].w, ca[i].h);
+                    ctx.fillRect(ca[i].x - 5, ca[i].y + 6, 5, 4);
+                    ctx.fillRect(ca[i].x - 5, ca[i].y + 2, 3, 8);
+                    ctx.fillRect(ca[i].x + ca[i].w, ca[i].y + 8, 5, 4);
+                    ctx.fillRect(ca[i].x + ca[i].w + 2, ca[i].y + 4, 3, 8);
+                }
+                ctx.fillStyle = col;
+                ctx.fillRect(d.x, d.y, d.w, d.h);
+                ctx.fillRect(d.x + d.w - 6, d.y - 6, 10, 8);
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(d.x + d.w + 1, d.y - 5, 3, 3);
+                ctx.fillStyle = col;
+                if (!d.jmp) {
+                    ctx.fillRect(d.x + 4, d.y + d.h, 5, 8);
+                    ctx.fillRect(d.x + 12, d.y + d.h, 5, d.fr % 2 === 0 ? 8 : 4);
+                } else {
+                    ctx.fillRect(d.x + 4, d.y + d.h, 5, 6);
+                    ctx.fillRect(d.x + 12, d.y + d.h, 5, 6);
+                }
+                ctx.fillRect(d.x - 6, d.y + 8, 8, 4);
+                scEl.textContent = sc;
+                currentRaf = requestAnimationFrame(loop);
+            }
+
+            // Expose stop function for page navigation
+            window.stopDinoGame = function() {
+                if (currentRaf) {
+                    cancelAnimationFrame(currentRaf);
+                    currentRaf = null;
+                }
+                st = 'idle';
+                msg.textContent = 'Press space / tap to start';
+            };
+
+            reset();
+
+            document.addEventListener('keydown', e => {
+                if (e.code === 'Space') {
+                    // Only respond if game page is visible
+                    if (gamePage && gamePage.classList.contains('hidden')) return;
+                    e.preventDefault();
+                    jump();
+                }
+            });
+
+            cv.addEventListener('click', jump);
+            cv.addEventListener('touchstart', e => {
+                if (gamePage && gamePage.classList.contains('hidden')) return;
+                e.preventDefault();
+                jump();
+            }, { passive: false });
+        })();
     </script>
 </body>
 </html>
