@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>🔍 Lost & Found | Full‑Cover Triangle Transition</title>
+    <title>🔍 Lost & Found | Horizontal Triangle Transition</title>
     <script src="https://unpkg.com/parse@5.3.0/dist/parse.min.js"></script>
     <style>
         * {
@@ -96,7 +96,7 @@
             display: none !important;
         }
 
-        /* ========= TRIANGLE CURTAIN – FULL COVERAGE ========= */
+        /* ========= TRIANGLE CURTAIN – HORIZONTAL SLIDING ========= */
         .triangle-curtain {
             position: fixed;
             top: 0;
@@ -114,41 +114,30 @@
         }
         .triangle {
             position: absolute;
-            transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease;
+            transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1);
             will-change: transform;
         }
-        /* Left triangle – covers left half + more */
+        /* Left triangle – slides from left edge horizontally, covers more than half */
         .triangle-1 {
-            top: -50%;
+            top: -20%;
             left: -50%;
-            width: 200%;
-            height: 200%;
+            width: 150%;
+            height: 140%;
             background: #1a1f2c;
             clip-path: polygon(0 0, 100% 0, 0 100%);
-            transform: translateX(-100%) rotate(0deg);
+            transform: translateX(-100%);
         }
-        /* Right triangle – covers right half + more */
+        /* Right triangle – slides from right edge horizontally, covers more than half */
         .triangle-2 {
-            top: -50%;
+            top: -20%;
             right: -50%;
-            width: 200%;
-            height: 200%;
+            width: 150%;
+            height: 140%;
             background: #2c2f3a;
             clip-path: polygon(100% 0, 100% 100%, 0 100%);
-            transform: translateX(100%) rotate(0deg);
+            transform: translateX(100%);
         }
-        /* Center golden triangle – fills any diagonal gap */
-        .triangle-3 {
-            top: 50%;
-            left: 50%;
-            width: 150%;
-            height: 150%;
-            background: #f39c12;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-        }
-        /* decorative small triangles for flair */
+        /* decorative small triangles – optional, keep for flair but no center triangle */
         .triangle-4, .triangle-5, .triangle-6 {
             width: 100px;
             height: 100px;
@@ -157,24 +146,20 @@
             transform: scale(0);
             transition: transform 0.8s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.6s;
         }
-        .triangle-4 { bottom: 5%; left: 5%; background: rgba(243,156,18,0.5); }
-        .triangle-5 { top: 10%; right: 8%; width: 140px; height: 140px; background: rgba(231,76,60,0.5); }
-        .triangle-6 { bottom: 15%; right: 15%; width: 70px; height: 70px; background: rgba(241,196,15,0.6); }
+        .triangle-4 { bottom: 5%; left: 5%; background: rgba(243,156,18,0.4); }
+        .triangle-5 { top: 10%; right: 8%; width: 140px; height: 140px; background: rgba(231,76,60,0.4); }
+        .triangle-6 { bottom: 15%; right: 15%; width: 70px; height: 70px; background: rgba(241,196,15,0.5); }
 
-        /* COVER STATE – triangles slide in and expand */
+        /* COVER STATE – side triangles slide inward horizontally, overlapping in center */
         .triangle-curtain.cover .triangle-1 {
-            transform: translateX(0) rotate(0deg);
+            transform: translateX(30%);  /* slides right to cover left + center */
             transition-delay: 0s;
         }
         .triangle-curtain.cover .triangle-2 {
-            transform: translateX(0) rotate(0deg);
+            transform: translateX(-30%); /* slides left to cover right + center */
             transition-delay: 0.1s;
         }
-        .triangle-curtain.cover .triangle-3 {
-            transform: translate(-50%, -50%) scale(1.8);
-            opacity: 1;
-            transition-delay: 0.2s;
-        }
+        /* decorative triangles appear */
         .triangle-curtain.cover .triangle-4,
         .triangle-curtain.cover .triangle-5,
         .triangle-curtain.cover .triangle-6 {
@@ -183,29 +168,24 @@
             transition-delay: 0.3s;
         }
 
-        /* SLIDEOUT STATE – triangles disappear off-screen */
+        /* SLIDEOUT STATE – triangles slide back outward */
         .triangle-curtain.slideout .triangle-1 {
-            transform: translateX(-150%) rotate(-10deg);
+            transform: translateX(-150%);
             transition-delay: 0s;
         }
         .triangle-curtain.slideout .triangle-2 {
-            transform: translateX(150%) rotate(10deg);
+            transform: translateX(150%);
             transition-delay: 0.05s;
-        }
-        .triangle-curtain.slideout .triangle-3 {
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-            transition-delay: 0.1s;
         }
         .triangle-curtain.slideout .triangle-4,
         .triangle-curtain.slideout .triangle-5,
         .triangle-curtain.slideout .triangle-6 {
-            transform: scale(0) rotate(40deg);
+            transform: scale(0) rotate(30deg);
             opacity: 0;
-            transition-delay: 0.15s;
+            transition-delay: 0.1s;
         }
 
-        /* other UI styles (unchanged, keep consistent) */
+        /* other UI styles (unchanged) */
         h2 {
             font-size: 32px;
             font-weight: 800;
@@ -356,11 +336,10 @@
     </div>
 </div>
 
-<!-- TRIANGLE CURTAIN – now with full coverage -->
+<!-- TRIANGLE CURTAIN – only side triangles + small decors (no middle) -->
 <div id="triangleCurtain" class="triangle-curtain">
     <div class="triangle triangle-1"></div>
     <div class="triangle triangle-2"></div>
-    <div class="triangle triangle-3"></div>
     <div class="triangle triangle-4"></div>
     <div class="triangle triangle-5"></div>
     <div class="triangle triangle-6"></div>
@@ -382,7 +361,7 @@
 <script src="login.js"></script>
 <script>
     (function() {
-        // ========== FULL COVERAGE TRIANGLE TRANSITION ==========
+        // ========== HORIZONTAL SLIDING TRIANGLE TRANSITION ==========
         const curtain = document.getElementById('triangleCurtain');
         let isAnimating = false;
         let pendingCallback = null;
@@ -393,11 +372,11 @@
                 return;
             }
             isAnimating = true;
-            // reset and force reflow
+            // reset
             curtain.classList.remove('cover', 'slideout', 'active');
             void curtain.offsetWidth;
             curtain.classList.add('active', 'cover');
-            // after cover animation, slide out
+            // after cover animation (slower), slide out
             setTimeout(() => {
                 curtain.classList.remove('cover');
                 curtain.classList.add('slideout');
@@ -410,8 +389,8 @@
                         pendingCallback = null;
                         runTriangleTransition(cb);
                     }
-                }, 800);
-            }, 700);
+                }, 1000); // slideout duration (1s)
+            }, 1000); // cover duration (1s) – slower movement
         }
 
         // ========== PAGE NAVIGATION ==========
