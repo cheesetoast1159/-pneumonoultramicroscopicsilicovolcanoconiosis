@@ -3,119 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>🔍 Lost & Found</title>
-    <script src="https://unpkg.com/parse@5.3.0/dist/parse.min.js">
-    </script>
+    <title>🔍 Lost & Found | Secure Returns</title>
+    <script src="https://unpkg.com/parse@5.3.0/dist/parse.min.js"></script>
     <style>
-        :root {
-            --bg: #f0f4f8;
-            --card-bg: #ffffff;
-            --primary: #2d4a7c;
-            --primary-light: #3d6ab5;
-            --accent: #e67e22;
-            --text: #1e2b3c;
-            --text-light: #4a5568;
-            --text-muted: #7b8ba0;
-            --border: #dce3ea;
-            --danger: #c0392b;
-            --danger-light: #b23b3b;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
-            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06);
-            --radius: 16px;
-            --radius-sm: 12px;
-            --radius-xs: 8px;
-            --font-size-base: 15px;
-            --font-size-sm: 13px;
-            --font-size-lg: 17px;
-            --font-size-xl: 20px;
-            --font-size-2xl: 24px;
-            --safe-top: env(safe-area-inset-top, 0px);
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --safe-left: env(safe-area-inset-left, 0px);
-            --safe-right: env(safe-area-inset-right, 0px);
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        html {
-            height: 100%;
-            -webkit-text-size-adjust: 100%;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        :root {
+            --bg-gradient: linear-gradient(135deg, #eef2f9 0%, #d9e2ef 100%);
+            --card-bg: rgba(255, 255, 255, 0.96);
+            --primary: #1f3e61;
+            --primary-dark: #0f2a44;
+            --primary-light: #2c5a8c;
+            --accent: #d85c27;
+            --accent-glow: #ff8c42;
+            --text: #1e2b3c;
+            --text-light: #4a5b6e;
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06);
+            --radius-card: 24px;
+            --radius-button: 16px;
+            --radius-input: 14px;
+            --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         body {
-            height: 100%;
-            min-height: 100dvh;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            font-size: var(--font-size-base);
-            background: #e8edf3;
-            color: var(--text);
-            line-height: 1.5;
-            overflow: hidden;
+            background: #bbc8dc;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0;
+            padding: 16px;
+        }
+
+        /* animated background mesh */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(220, 240, 255, 0.4) 0%, rgba(200, 220, 250, 0) 70%),
+                        repeating-linear-gradient(45deg, rgba(255,255,240,0.02) 0px, rgba(255,255,240,0.02) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .app-container {
             width: 100%;
-            height: 100%;
-            height: 100dvh;
-            max-width: 100%;
-            max-height: 100dvh;
-            background: var(--bg);
+            max-width: 560px;
+            height: 90vh;
+            max-height: 800px;
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border-radius: 40px;
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.6) inset;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
             position: relative;
-            box-shadow: none;
-            padding-top: var(--safe-top);
-            padding-bottom: var(--safe-bottom);
-            padding-left: var(--safe-left);
-            padding-right: var(--safe-right);
+            z-index: 2;
+            transition: transform 0.2s ease;
         }
 
-        @media (min-width: 768px) {
-            .app-container {
-                max-width: 520px;
-                max-height: 100dvh;
-                border-radius: 0;
-                box-shadow: var(--shadow-lg);
-            }
-            body {
-                background: #d5dce6;
-                padding: 0;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .app-container {
-                max-width: 560px;
-            }
+        /* geometric header cutout */
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(110deg, var(--primary) 0%, var(--primary-light) 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+            z-index: 0;
+            opacity: 0.95;
         }
 
         .page {
             flex: 1;
+            overflow-y: auto;
+            padding: 24px 20px 30px;
             display: flex;
             flex-direction: column;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 20px 18px 24px;
-            gap: 14px;
-            -webkit-overflow-scrolling: touch;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
             scroll-behavior: smooth;
         }
 
@@ -123,1024 +105,773 @@
             display: none !important;
         }
 
-        .page::-webkit-scrollbar {
-            width: 4px;
-        }
-        .page::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .page::-webkit-scrollbar-thumb {
-            background: #c4cdd8;
-            border-radius: 4px;
-        }
-
-        h2 {
-            font-size: var(--font-size-2xl);
+        /* sharper typography */
+        h2, h3 {
             font-weight: 700;
-            color: var(--primary);
-            text-align: center;
-            letter-spacing: -0.3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        h3 {
-            font-size: var(--font-size-xl);
-            font-weight: 600;
-            color: var(--text);
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        p {
-            color: var(--text-light);
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .emoji-icon {
-            font-size: 1.2em;
+            letter-spacing: -0.02em;
+            position: relative;
             display: inline-block;
         }
 
-        input[type="text"],
-        input[type="password"],
-        input[type="datetime-local"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 13px 15px;
-            font-size: var(--font-size-base);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: #fff;
-            color: var(--text);
-            transition: all 0.2s ease;
-            -webkit-appearance: none;
-            appearance: none;
-            font-family: inherit;
-            flex-shrink: 0;
+        h2 {
+            font-size: 28px;
+            background: linear-gradient(130deg, var(--primary), var(--accent));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
         }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(45, 74, 124, 0.08);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 38px;
-            cursor: pointer;
-        }
-
-        input[type="file"] {
-            font-size: var(--font-size-sm);
-            flex-shrink: 0;
-        }
-
-        label {
-            font-weight: 600;
-            font-size: var(--font-size-sm);
-            color: var(--text-light);
-            display: block;
-            margin-bottom: 2px;
-            flex-shrink: 0;
-        }
-
-        button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 13px 20px;
-            font-size: var(--font-size-base);
-            font-weight: 600;
-            border: none;
-            border-radius: var(--radius-sm);
-            background: var(--primary);
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            letter-spacing: 0.1px;
-            width: 100%;
-        }
-
-        button:active {
-            transform: scale(0.97);
-            opacity: 0.9;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .row button {
-            width: auto;
-        }
-
+        /* cards with cut corner effect */
         .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-card);
+            padding: 18px;
             box-shadow: var(--shadow-sm);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            border: 1px solid var(--border);
-            transition: box-shadow 0.2s ease;
-            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
+            transform: translateY(-4px) scale(1.01);
             box-shadow: var(--shadow-md);
+            border-color: rgba(220, 180, 120, 0.3);
         }
-        .card .row {
-            flex-wrap: wrap;
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.02) 50%);
+            pointer-events: none;
+            border-radius: 0 0 0 20px;
         }
-        .card button {
-            width: auto;
-            padding: 10px 16px;
-            font-size: var(--font-size-sm);
-            border-radius: var(--radius-xs);
+
+        /* geometric buttons */
+        button {
+            background: linear-gradient(95deg, var(--primary), var(--primary-dark));
+            border: none;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: var(--radius-button);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .verify-btn {
-            background: var(--accent);
+            background: linear-gradient(95deg, var(--accent), #b5471a);
         }
+
         .small-btn {
-            background: #8899aa;
-            font-size: var(--font-size-sm);
-            padding: 8px 14px;
-        }
-        .forgot-btn {
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--border);
-            padding: 8px 14px;
-            font-size: var(--font-size-sm);
-        }
-        .contact-info {
-            background: #fef9e7;
+            background: #5c6f87;
             padding: 10px 14px;
-            border-radius: var(--radius-xs);
-            font-size: var(--font-size-sm);
-            color: #7d6608;
-            border: 1px solid #f9e79f;
-        }
-        .contact-info.hidden {
-            display: none;
+            font-size: 14px;
         }
 
-        img.item-photo {
+        /* inputs with sharper borders */
+        input, select, textarea {
             width: 100%;
-            max-height: 240px;
-            object-fit: cover;
-            border-radius: var(--radius-xs);
-            margin-top: 6px;
-            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-input);
+            font-size: 15px;
+            transition: var(--transition-smooth);
+            background: white;
         }
 
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-light);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(31, 62, 97, 0.15);
+            transform: scale(1.01);
+        }
+
+        /* animated row for buttons */
+        .row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .row button {
+            flex: 1;
+        }
+
+        /* dino game wrapper refined */
+        .dino-game-wrapper {
+            background: #f2f5fa;
+            border-radius: 32px;
+            padding: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        /* moving background particles (optional) */
+        @keyframes floatBg {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-40px) rotate(2deg); }
+        }
+
+        /* popup with sharper geometry */
         .verify-popup {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            height: 100dvh;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 20px;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
         }
-        .verify-popup.hidden {
-            display: none !important;
-        }
+        .verify-popup.hidden { display: none; }
         .popup-content {
-            background: #fff;
-            border-radius: var(--radius);
-            padding: 24px 20px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            animation: popIn 0.25s ease;
+            background: white;
+            border-radius: 48px 24px 48px 24px;
+            padding: 28px;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: 0 32px 64px rgba(0,0,0,0.2);
+            animation: popIn 0.25s cubic-bezier(0.2, 1.3, 0.3, 1);
         }
         @keyframes popIn {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* scrollbar refinement */
+        .page::-webkit-scrollbar {
+            width: 5px;
+        }
+        .page::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .page::-webkit-scrollbar-thumb {
+            background: #b9c4d1;
+            border-radius: 10px;
+        }
+
+        /* contact info reveal */
+        .contact-info {
+            background: #fef7e0;
+            border-left: 6px solid var(--accent);
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 14px;
+        }
+
+        /* additional shine */
+        .emoji-icon {
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+            transition: transform 0.2s;
+        }
+        button:hover .emoji-icon {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                max-height: 95vh;
+                border-radius: 28px;
             }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        .popup-content button {
-            width: 100%;
-        }
-        .popup-content h3 {
-            margin-bottom: 0;
-        }
-
-        #verificationSection {
-            background: #fef9e7;
-            border-radius: var(--radius-sm);
-            padding: 14px;
-            border: 1px dashed #e6c942;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        #verificationSection label {
-            color: #7d6608;
-            font-weight: 700;
-        }
-
-        /* Dino Game Styles */
-        .dino-game-wrapper {
-            background: #fafafa;
-            border-radius: var(--radius);
-            padding: 12px 10px 8px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex-shrink: 0;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .dino-game-wrapper canvas {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-bottom: 2px solid #222;
-            cursor: pointer;
-            border-radius: 4px 4px 0 0;
-            background: #fff;
-            image-rendering: auto;
-        }
-        .dino-score-row {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            font-size: 13px;
-            color: #888;
-            margin-bottom: 6px;
-            padding: 0 4px;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .dino-score-row span {
-            font-weight: 700;
-            color: #555;
-        }
-        .dino-msg {
-            text-align: center;
-            font-size: 13px;
-            color: #888;
-            margin-top: 8px;
-            font-family: 'Courier New', Courier, monospace;
-            min-height: 20px;
-        }
-
-        .game-btn {
-            background: #4a7c59;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            transition: all 0.2s ease;
-        }
-        .game-btn:active {
-            background: #3d6a4b;
-            transform: scale(0.97);
-        }
-
-        @media (max-width: 380px) {
             .page {
-                padding: 14px 12px 20px;
-                gap: 10px;
+                padding: 18px 16px;
             }
             h2 {
-                font-size: 20px;
+                font-size: 24px;
             }
-            input[type="text"],
-            input[type="password"],
-            input[type="datetime-local"],
-            select,
-            textarea {
-                padding: 11px 13px;
-                font-size: 14px;
-            }
-            button {
-                padding: 12px 16px;
-                font-size: 14px;
-            }
-            .dino-game-wrapper {
-                padding: 8px 6px 6px;
-            }
-            .dino-score-row {
-                font-size: 11px;
-            }
-            .dino-msg {
-                font-size: 11px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .page {
-                padding: 24px 22px 28px;
-                gap: 16px;
-            }
-            h2 {
-                font-size: 26px;
-            }
-            button {
-                padding: 14px 22px;
-                font-size: 16px;
-            }
-            input[type="text"],
-            input[type="password"],
-            input[type="datetime-local"],
-            select,
-            textarea {
-                padding: 14px 16px;
-                font-size: 16px;
-            }
-            .dino-game-wrapper {
-                padding: 16px 14px 10px;
-            }
-            .dino-score-row {
-                font-size: 14px;
-            }
-            .dino-msg {
-                font-size: 14px;
-            }
-        }
-
-        #lostResults {
-            flex: 1;
-            overflow-y: auto;
-            min-height: 0;
-        }
-
-        #authMessage,
-        #foundMessage,
-        #verifyMessage,
-        #verifyStatusMessage {
-            flex-shrink: 0;
-            text-align: center;
-            font-weight: 500;
         }
     </style>
 </head>
 <body>
-    <div class="app-container" id="appContainer">
-        <!-- LOGIN PAGE -->
-        <div id="loginPage" class="page">
-            <h2><span class="emoji-icon">🔐</span> Welcome</h2>
-            <div id="loginForm" style="display:flex;flex-direction:column;gap:10px;flex-shrink:0;">
-                <input type="text" id="loginUsername" placeholder="👤 Username" autocomplete="username">
-                <input type="password" id="loginPassword" placeholder="🔑 Password" autocomplete="current-password">
-                <button id="signInBtn">🚪 Sign In</button>
-                <button id="showSignUpBtn" style="background:#eef2f6; color:#1e2b3c;">✨ Create account</button>
-            </div>
-            <div id="signUpForm" class="hidden" style="display:flex;flex-direction:column;gap:10px;flex-shrink:0;">
-                <input type="text" id="signUpUsername" placeholder="👤 Choose username">
-                <input type="password" id="signUpPassword" placeholder="🔑 Create password">
-                <button id="signUpSubmitBtn">📝 Sign Up</button>
-                <button id="showLoginBtn" style="background:#eef2f6; color:#1e2b3c;">⬅ Back to login</button>
-            </div>
-            <p id="authMessage" style="color:#c0392b; text-align:center;"></p>
+<div class="app-container" id="appContainer">
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="page">
+        <h2><span class="emoji-icon">🔐</span> Welcome Back</h2>
+        <div id="loginForm" style="display:flex; flex-direction:column; gap:12px;">
+            <input type="text" id="loginUsername" placeholder="👤 Username" autocomplete="username">
+            <input type="password" id="loginPassword" placeholder="🔑 Password" autocomplete="current-password">
+            <button id="signInBtn">🚪 Sign In</button>
+            <button id="showSignUpBtn" style="background:#5a6e88;">✨ Create account</button>
         </div>
-
-        <!-- HOME PAGE -->
-        <div id="homePage" class="page hidden">
-            <h2><span class="emoji-icon">🏠</span> Home</h2>
-            <p style="color:#4a5568;">Welcome, <span id="displayUsername">...</span>!</p>
-            <button id="goLostBtn"><span class="emoji-icon">🔎</span> Lost something?</button>
-            <button id="goFoundBtn"><span class="emoji-icon">📦</span> I found an item</button>
-            <button id="goDinoGameBtn" class="game-btn"><span class="emoji-icon">🦖</span> Dino Jump Game</button>
-            <button id="logoutFromHomeBtn" style="background:#b23b3b;"><span class="emoji-icon">🚪</span> Log out</button>
+        <div id="signUpForm" class="hidden" style="display:flex; flex-direction:column; gap:12px;">
+            <input type="text" id="signUpUsername" placeholder="👤 Choose username">
+            <input type="password" id="signUpPassword" placeholder="🔑 Create password">
+            <button id="signUpSubmitBtn">📝 Sign Up</button>
+            <button id="showLoginBtn" style="background:#5a6e88;">⬅ Back to login</button>
         </div>
-
-        <!-- LOST PAGE -->
-        <div id="lostPage" class="page hidden">
-            <h2><span class="emoji-icon">🔎</span> Lost Items Search</h2>
-            <div class="row" style="flex-shrink:0;">
-                <input type="text" id="lostSearchInput" placeholder="🔍 black water bottle, iPad, wallet..." style="flex:2;">
-                <button id="searchLostBtn" style="flex:1;">Filter</button>
-            </div>
-            <div id="lostResults" style="display:flex; flex-direction:column; gap:12px; flex:1; overflow-y:auto; min-height:0;"></div>
-            <button id="backToHomeFromLost" style="background:#8899aa;flex-shrink:0;">⬅ Back to Home</button>
-        </div>
-
-        <!-- FOUND PAGE -->
-        <div id="foundPage" class="page hidden">
-            <h2><span class="emoji-icon">📦</span> Report Found Item</h2>
-            <select id="foundType">
-                <option value="electronic">📱 Electronic</option>
-                <option value="personal">🎒 Personal Belongings</option>
-                <option value="clothing">👕 Clothing / Accessories</option>
-                <option value="documents">🪪 Documents / IDs</option>
-                <option value="keys">🔑 Keys</option>
-                <option value="bags">👜 Bags / Luggage</option>
-                <option value="other">📌 Other</option>
-            </select>
-            <input type="text" id="foundColor" placeholder="🎨 Color (e.g., black, silver)">
-            <input type="text" id="foundModel" placeholder="🏷️ Model/Brand (e.g., iPad Pro, Nike wallet)">
-            <input type="text" id="foundAppearance" placeholder="✨ Appearance (scratches, stickers...)">
-            <textarea id="foundDescription" placeholder="📝 Additional description (optional)" rows="2"></textarea>
-            <input type="datetime-local" id="foundTime">
-            <input type="text" id="foundLocation" placeholder="📍 Location found">
-            <div id="verificationSection">
-                <label>🔐 Verification (will NOT be shown publicly)</label>
-                <input type="text" id="foundVeriQuestion" placeholder="Question (e.g., Wallpaper description)">
-                <input type="text" id="foundVeriAnswer" placeholder="Answer (secret)">
-            </div>
-            <div style="margin-top:4px;flex-shrink:0;">
-                <label>📞 Your contact (optional, shared if someone forgot details)</label>
-                <input type="text" id="foundContactInfo" placeholder="Phone / email / Telegram (optional)">
-            </div>
-            <div class="row" style="flex-shrink:0;">
-                <label>📸 Photo (cover the screen/wallet interior!)</label>
-                <input type="file" id="foundPhoto" accept="image/*">
-            </div>
-            <button id="submitFoundBtn">✅ Submit found item</button>
-            <button id="backToHomeFromFound" style="background:#8899aa;">⬅ Back to Home</button>
-            <p id="foundMessage" style="color:#2c3e50;"></p>
-        </div>
-
-        <!-- DINO GAME PAGE -->
-        <div id="dinoGamePage" class="page hidden">
-            <h2><span class="emoji-icon">🦖</span> Dino Jump</h2>
-            <p style="color:#4a5568;">Tap the game area or press <strong>Space</strong> to jump!</p>
-            <div class="dino-game-wrapper" id="dino-game">
-                <div class="dino-score-row">
-                    <span>🏆 HI <span id="dhi">0</span></span>
-                    <span>⭐ <span id="dsc">0</span></span>
-                </div>
-                <canvas id="dc" width="700" height="130"></canvas>
-                <p class="dino-msg" id="dm">Press space / tap to start</p>
-            </div>
-            <button id="backToHomeFromGame" style="background:#8899aa;flex-shrink:0;">⬅ Back to Home</button>
-        </div>
-
-        <!-- VERIFY POPUP -->
-        <div id="verifyPopup" class="verify-popup hidden">
-            <div class="popup-content">
-                <h3>🔐 Verification</h3>
-                <p id="verifyQuestionText"></p>
-                <p id="verifyStatusMessage" style="color:#c0392b; font-weight:500;"></p>
-                <input type="text" id="verifyAnswerInput" placeholder="Your answer">
-                <button id="submitVerifyBtn">✅ Confirm</button>
-                <button id="cancelVerifyBtn" style="background:#aaa;">Cancel</button>
-                <p id="verifyMessage" style="font-weight:600;"></p>
-            </div>
-        </div>
+        <p id="authMessage" style="color:#c0392b; text-align:center;"></p>
     </div>
 
-    <script src="backend.js">
-    </script>
-    <script src="login.js">
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginPage = document.getElementById('loginPage');
-            const homePage = document.getElementById('homePage');
-            const lostPage = document.getElementById('lostPage');
-            const foundPage = document.getElementById('foundPage');
-            const dinoGamePage = document.getElementById('dinoGamePage');
-            const verifyPopup = document.getElementById('verifyPopup');
-            const authMessage = document.getElementById('authMessage');
-            let currentVerifyingItemId = null;
+    <!-- HOME PAGE -->
+    <div id="homePage" class="page hidden">
+        <h2><span class="emoji-icon">🏠</span> Home</h2>
+        <p style="font-weight:500;">Welcome, <strong id="displayUsername">...</strong>!</p>
+        <button id="goLostBtn"><span class="emoji-icon">🔎</span> Lost something?</button>
+        <button id="goFoundBtn"><span class="emoji-icon">📦</span> I found an item</button>
+        <button id="goDinoGameBtn" class="game-btn"><span class="emoji-icon">🦖</span> Dino Jump Game</button>
+        <button id="logoutFromHomeBtn" style="background:#b13e3e;"><span class="emoji-icon">🚪</span> Log out</button>
+    </div>
 
-            const allPages = [loginPage, homePage, lostPage, foundPage, dinoGamePage];
+    <!-- LOST PAGE -->
+    <div id="lostPage" class="page hidden">
+        <h2><span class="emoji-icon">🔎</span> Lost Items</h2>
+        <div class="row">
+            <input type="text" id="lostSearchInput" placeholder="🔍 Search (color, model, type...)" style="flex:2;">
+            <button id="searchLostBtn" style="flex:1;">Filter</button>
+        </div>
+        <div id="lostResults" style="display:flex; flex-direction:column; gap:14px; flex:1; overflow-y:auto;"></div>
+        <button id="backToHomeFromLost" style="background:#6f7f8f;">⬅ Back to Home</button>
+    </div>
 
-            function showPage(page) {
-                // Stop dino game if navigating away from game page
-                if (dinoGamePage && !dinoGamePage.classList.contains('hidden') && page !== dinoGamePage) {
-                    if (typeof window.stopDinoGame === 'function') {
-                        window.stopDinoGame();
-                    }
+    <!-- FOUND PAGE -->
+    <div id="foundPage" class="page hidden">
+        <h2><span class="emoji-icon">📦</span> Report Found</h2>
+        <select id="foundType">
+            <option value="electronic">📱 Electronic</option>
+            <option value="personal">🎒 Personal Belongings</option>
+            <option value="clothing">👕 Clothing / Accessories</option>
+            <option value="documents">🪪 Documents / IDs</option>
+            <option value="keys">🔑 Keys</option>
+            <option value="bags">👜 Bags / Luggage</option>
+            <option value="other">📌 Other</option>
+        </select>
+        <input type="text" id="foundColor" placeholder="🎨 Color">
+        <input type="text" id="foundModel" placeholder="🏷️ Model/Brand">
+        <input type="text" id="foundAppearance" placeholder="✨ Appearance (stickers, scratches)">
+        <textarea id="foundDescription" placeholder="📝 Additional description" rows="2"></textarea>
+        <input type="datetime-local" id="foundTime">
+        <input type="text" id="foundLocation" placeholder="📍 Location found">
+        <div id="verificationSection">
+            <label>🔐 Verification (private)</label>
+            <input type="text" id="foundVeriQuestion" placeholder="Question (e.g., Wallpaper description)">
+            <input type="text" id="foundVeriAnswer" placeholder="Answer (secret)">
+        </div>
+        <input type="text" id="foundContactInfo" placeholder="📞 Your contact (optional, shown if verification fails)">
+        <div class="row">
+            <label>📸 Photo</label>
+            <input type="file" id="foundPhoto" accept="image/*">
+        </div>
+        <button id="submitFoundBtn">✅ Submit found item</button>
+        <button id="backToHomeFromFound" style="background:#6f7f8f;">⬅ Back to Home</button>
+        <p id="foundMessage" style="color:#2c3e50;"></p>
+    </div>
+
+    <!-- DINO GAME PAGE -->
+    <div id="dinoGamePage" class="page hidden">
+        <h2><span class="emoji-icon">🦖</span> Dino Jump</h2>
+        <p>Tap / space to jump — sharper reflexes win</p>
+        <div class="dino-game-wrapper" id="dino-game">
+            <div class="dino-score-row">
+                <span>🏆 HI <span id="dhi">0</span></span>
+                <span>⭐ <span id="dsc">0</span></span>
+            </div>
+            <canvas id="dc" width="700" height="130"></canvas>
+            <p class="dino-msg" id="dm">Press space / tap to start</p>
+        </div>
+        <button id="backToHomeFromGame" style="background:#6f7f8f;">⬅ Back to Home</button>
+    </div>
+
+    <!-- VERIFY POPUP -->
+    <div id="verifyPopup" class="verify-popup hidden">
+        <div class="popup-content">
+            <h3>🔐 Verification</h3>
+            <p id="verifyQuestionText"></p>
+            <p id="verifyStatusMessage" style="color:#c0392b;"></p>
+            <input type="text" id="verifyAnswerInput" placeholder="Your answer">
+            <button id="submitVerifyBtn">✅ Confirm</button>
+            <button id="cancelVerifyBtn" style="background:#aaa;">Cancel</button>
+            <p id="verifyMessage"></p>
+        </div>
+    </div>
+</div>
+
+<script src="backend.js"></script>
+<script src="login.js"></script>
+<script>
+    (function() {
+        // UI Enhancements: ripple effect on buttons, smooth scroll, card stagger animation
+        function addRipple(button) {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = e.clientX - rect.left - size/2 + 'px';
+                ripple.style.top = e.clientY - rect.top - size/2 + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.background = 'rgba(255,255,255,0.5)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.transition = 'transform 0.4s, opacity 0.6s';
+                button.style.position = 'relative';
+                button.style.overflow = 'hidden';
+                button.appendChild(ripple);
+                requestAnimationFrame(() => {
+                    ripple.style.transform = 'scale(4)';
+                    ripple.style.opacity = '0';
+                });
+                setTimeout(() => ripple.remove(), 500);
+            });
+        }
+
+        document.querySelectorAll('button').forEach(addRipple);
+
+        // Animate page entries
+        const pages = document.querySelectorAll('.page');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeSlideUp 0.35s ease-out';
                 }
-                allPages.forEach(p => p.classList.add('hidden'));
-                page.classList.remove('hidden');
-                page.scrollTop = 0;
+            });
+        }, { threshold: 0.1 });
+        pages.forEach(p => observer.observe(p));
+
+        const styleAnim = document.createElement('style');
+        styleAnim.textContent = `
+            @keyframes fadeSlideUp {
+                from { opacity: 0; transform: translateY(12px); }
+                to { opacity: 1; transform: translateY(0); }
             }
-
-            function checkSession() {
-                if (auth.getCurrentUser()) {
-                    document.getElementById('displayUsername').textContent = auth.getCurrentUser().getUsername();
-                    showPage(homePage);
-                } else {
-                    showPage(loginPage);
-                }
+            .card {
+                animation: fadeSlideUp 0.3s ease-out;
+                animation-fill-mode: backwards;
             }
+        `;
+        document.head.appendChild(styleAnim);
+    })();
 
-            // Login / SignUp toggle
-            document.getElementById('showSignUpBtn').addEventListener('click', () => {
-                document.getElementById('loginForm').classList.add('hidden');
-                document.getElementById('signUpForm').classList.remove('hidden');
-                authMessage.textContent = '';
-            });
-            document.getElementById('showLoginBtn').addEventListener('click', () => {
-                document.getElementById('signUpForm').classList.add('hidden');
-                document.getElementById('loginForm').classList.remove('hidden');
-                authMessage.textContent = '';
-            });
+    // ------ Original app logic (Parse integration) with enhanced UI callbacks ------
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginPage = document.getElementById('loginPage');
+        const homePage = document.getElementById('homePage');
+        const lostPage = document.getElementById('lostPage');
+        const foundPage = document.getElementById('foundPage');
+        const dinoGamePage = document.getElementById('dinoGamePage');
+        const verifyPopup = document.getElementById('verifyPopup');
+        const authMessage = document.getElementById('authMessage');
+        let currentVerifyingItemId = null;
 
-            // Sign In
-            document.getElementById('signInBtn').addEventListener('click', async () => {
-                const u = document.getElementById('loginUsername').value.trim();
-                const p = document.getElementById('loginPassword').value;
-                if (!u || !p) return authMessage.textContent = 'Fill both fields.';
-                try {
-                    await auth.logIn(u, p);
-                    checkSession();
-                } catch (e) {
-                    authMessage.textContent = e.message;
-                }
-            });
+        const allPages = [loginPage, homePage, lostPage, foundPage, dinoGamePage];
 
-            // Sign Up
-            document.getElementById('signUpSubmitBtn').addEventListener('click', async () => {
-                const u = document.getElementById('signUpUsername').value.trim();
-                const p = document.getElementById('signUpPassword').value;
-                if (!u || !p) return authMessage.textContent = 'Fill both fields.';
-                try {
-                    await auth.signUp(u, p);
-                    checkSession();
-                } catch (e) {
-                    authMessage.textContent = e.message;
-                }
-            });
-
-            // Navigation
-            document.getElementById('goLostBtn').addEventListener('click', () => {
-                showPage(lostPage);
-                loadLostItems('');
-            });
-            document.getElementById('goFoundBtn').addEventListener('click', () => showPage(foundPage));
-            document.getElementById('goDinoGameBtn').addEventListener('click', () => showPage(dinoGamePage));
-            document.getElementById('logoutFromHomeBtn').addEventListener('click', async () => {
+        function showPage(page) {
+            if (dinoGamePage && !dinoGamePage.classList.contains('hidden') && page !== dinoGamePage) {
                 if (typeof window.stopDinoGame === 'function') window.stopDinoGame();
-                await auth.logOut();
-                checkSession();
-            });
-            document.getElementById('backToHomeFromLost').addEventListener('click', () => showPage(homePage));
-            document.getElementById('backToHomeFromFound').addEventListener('click', () => showPage(homePage));
-            document.getElementById('backToHomeFromGame').addEventListener('click', () => showPage(homePage));
-
-            // Lost page search
-            document.getElementById('searchLostBtn').addEventListener('click', () => {
-                const term = document.getElementById('lostSearchInput').value;
-                loadLostItems(term);
-            });
-
-            async function loadLostItems(searchTerm = '') {
-                const container = document.getElementById('lostResults');
-                container.innerHTML = '<p>⌛ Loading...</p>';
-                try {
-                    const items = await searchLostItems(searchTerm);
-                    if (items.length === 0) {
-                        container.innerHTML = '<p>😔 No matching items found.</p>';
-                        return;
-                    }
-                    container.innerHTML = items.map(item => {
-                        const type = item.get('type');
-                        let typeEmoji = '📌';
-                        if (type === 'electronic') typeEmoji = '📱';
-                        else if (type === 'personal') typeEmoji = '🎒';
-                        else if (type === 'clothing') typeEmoji = '👕';
-                        else if (type === 'documents') typeEmoji = '🪪';
-                        else if (type === 'keys') typeEmoji = '🔑';
-                        else if (type === 'bags') typeEmoji = '👜';
-
-                        const photo = item.get('photo');
-                        const photoUrl = photo ? photo.url() : null;
-                        const description = item.get('description') || '';
-                        const contact = item.get('contactInfo') || '';
-                        return `
-                                <div class="card">
-                                    <div class="row" style="justify-content:space-between;">
-                                        <span><strong>${typeEmoji} ${type}</strong></span>
-                                        <span>🕒 ${item.get('timeFound')?.toLocaleString?.() || item.get('timeFound')}</span>
-                                    </div>
-                                    <div><span style="color:#2d4a7c;">🎨</span> ${item.get('color')} · <span style="color:#2d4a7c;">🏷️</span> ${item.get('model')}</div>
-                                    <div>✨ ${item.get('appearance')}</div>
-                                    ${description ? `<div style="color:#4a5568; font-style:italic;">📝 ${description}</div>` : ''}
-                                    <div>📍 ${item.get('locationFound')}</div>
-                                    ${photoUrl ? `<img src="${photoUrl}" class="item-photo" alt="item">` : ''}
-                                    <button class="verify-btn" data-id="${item.id}">🔐 Verify it's yours</button>
-                                    <button class="small-btn forgot-btn" data-contact="${contact.replace(/"/g, '&quot;')}" style="margin-top:4px;">❓ Forgot details?</button>
-                                    <div class="contact-info hidden" id="contact-${item.id}">
-                                        ${contact ? `📞 Owner contact: ${contact}` : '⚠️ No contact info provided by finder.'}
-                                    </div>
-                                </div>
-                            `;
-                    }).join('');
-
-                    // Attach verify listeners
-                    document.querySelectorAll('.verify-btn').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            currentVerifyingItemId = e.target.dataset.id;
-                            openVerifyPopup(currentVerifyingItemId);
-                        });
-                    });
-
-                    // Attach forgot details toggles
-                    document.querySelectorAll('.forgot-btn').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            const itemId = e.target.closest('.card').querySelector('.verify-btn')
-                                .dataset.id;
-                            const contactDiv = document.getElementById(`contact-${itemId}`);
-                            if (contactDiv) {
-                                contactDiv.classList.toggle('hidden');
-                            }
-                        });
-                    });
-                } catch (e) {
-                    container.innerHTML = `<p style="color:red;">Error: ${e.message}</p>`;
-                }
             }
+            allPages.forEach(p => p.classList.add('hidden'));
+            page.classList.remove('hidden');
+            page.scrollTop = 0;
+        }
 
-            async function openVerifyPopup(itemId) {
-                const statusEl = document.getElementById('verifyStatusMessage');
-                const answerInput = document.getElementById('verifyAnswerInput');
-                const questionEl = document.getElementById('verifyQuestionText');
-                const msgEl = document.getElementById('verifyMessage');
-                statusEl.textContent = '';
-                msgEl.textContent = '';
-                answerInput.value = '';
-                answerInput.disabled = false;
-                document.getElementById('submitVerifyBtn').disabled = false;
+        function checkSession() {
+            if (auth.getCurrentUser()) {
+                document.getElementById('displayUsername').textContent = auth.getCurrentUser().getUsername();
+                showPage(homePage);
+            } else {
+                showPage(loginPage);
+            }
+        }
 
-                try {
-                    const query = new Parse.Query(Parse.Object.extend("LostItem"));
-                    const item = await query.get(itemId);
-                    if (item.get("verificationBlocked")) {
-                        statusEl.textContent = '⛔ Permanently blocked.';
+        // Login UI toggles
+        document.getElementById('showSignUpBtn')?.addEventListener('click', () => {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signUpForm').classList.remove('hidden');
+            authMessage.textContent = '';
+        });
+        document.getElementById('showLoginBtn')?.addEventListener('click', () => {
+            document.getElementById('signUpForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            authMessage.textContent = '';
+        });
+
+        document.getElementById('signInBtn')?.addEventListener('click', async () => {
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value;
+            if (!u || !p) return authMessage.textContent = 'Fill both fields.';
+            try {
+                await auth.logIn(u, p);
+                checkSession();
+            } catch (e) {
+                authMessage.textContent = e.message;
+            }
+        });
+
+        document.getElementById('signUpSubmitBtn')?.addEventListener('click', async () => {
+            const u = document.getElementById('signUpUsername').value.trim();
+            const p = document.getElementById('signUpPassword').value;
+            if (!u || !p) return authMessage.textContent = 'Fill both fields.';
+            try {
+                await auth.signUp(u, p);
+                checkSession();
+            } catch (e) {
+                authMessage.textContent = e.message;
+            }
+        });
+
+        // Navigation
+        document.getElementById('goLostBtn')?.addEventListener('click', () => {
+            showPage(lostPage);
+            loadLostItems('');
+        });
+        document.getElementById('goFoundBtn')?.addEventListener('click', () => showPage(foundPage));
+        document.getElementById('goDinoGameBtn')?.addEventListener('click', () => showPage(dinoGamePage));
+        document.getElementById('logoutFromHomeBtn')?.addEventListener('click', async () => {
+            if (typeof window.stopDinoGame === 'function') window.stopDinoGame();
+            await auth.logOut();
+            checkSession();
+        });
+        document.getElementById('backToHomeFromLost')?.addEventListener('click', () => showPage(homePage));
+        document.getElementById('backToHomeFromFound')?.addEventListener('click', () => showPage(homePage));
+        document.getElementById('backToHomeFromGame')?.addEventListener('click', () => showPage(homePage));
+        document.getElementById('searchLostBtn')?.addEventListener('click', () => {
+            const term = document.getElementById('lostSearchInput').value;
+            loadLostItems(term);
+        });
+
+        // Load lost items (exactly as before, but with card animations already handled by CSS)
+        async function loadLostItems(searchTerm = '') {
+            const container = document.getElementById('lostResults');
+            container.innerHTML = '<p style="text-align:center;">⌛ Loading...</p>';
+            try {
+                const items = await searchLostItems(searchTerm);
+                if (items.length === 0) {
+                    container.innerHTML = '<p>😔 No matching items found.</p>';
+                    return;
+                }
+                container.innerHTML = items.map(item => {
+                    const type = item.get('type');
+                    let typeEmoji = '📌';
+                    if (type === 'electronic') typeEmoji = '📱';
+                    else if (type === 'personal') typeEmoji = '🎒';
+                    else if (type === 'clothing') typeEmoji = '👕';
+                    else if (type === 'documents') typeEmoji = '🪪';
+                    else if (type === 'keys') typeEmoji = '🔑';
+                    else if (type === 'bags') typeEmoji = '👜';
+                    const photo = item.get('photo');
+                    const photoUrl = photo ? photo.url() : null;
+                    const description = item.get('description') || '';
+                    const contact = item.get('contactInfo') || '';
+                    return `
+                        <div class="card" style="animation-delay: ${Math.random() * 0.1}s">
+                            <div class="row" style="justify-content:space-between;">
+                                <span><strong>${typeEmoji} ${type}</strong></span>
+                                <span>🕒 ${item.get('timeFound')?.toLocaleString?.() || item.get('timeFound')}</span>
+                            </div>
+                            <div><span style="color:#2d4a7c;">🎨</span> ${item.get('color')} · <span style="color:#2d4a7c;">🏷️</span> ${item.get('model')}</div>
+                            <div>✨ ${item.get('appearance')}</div>
+                            ${description ? `<div style="color:#4a5568;">📝 ${description}</div>` : ''}
+                            <div>📍 ${item.get('locationFound')}</div>
+                            ${photoUrl ? `<img src="${photoUrl}" class="item-photo" style="max-width:100%; border-radius:16px; margin-top:8px;">` : ''}
+                            <button class="verify-btn" data-id="${item.id}">🔐 Verify & claim</button>
+                            <button class="small-btn forgot-btn" data-contact="${contact.replace(/"/g, '&quot;')}" style="margin-top:4px;">❓ Forgot details?</button>
+                            <div class="contact-info hidden" id="contact-${item.id}">
+                                ${contact ? `📞 Owner contact: ${contact}` : '⚠️ No contact info provided.'}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                document.querySelectorAll('.verify-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        currentVerifyingItemId = e.target.dataset.id;
+                        openVerifyPopup(currentVerifyingItemId);
+                    });
+                });
+                document.querySelectorAll('.forgot-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const itemId = e.target.closest('.card').querySelector('.verify-btn').dataset.id;
+                        const contactDiv = document.getElementById(`contact-${itemId}`);
+                        if (contactDiv) contactDiv.classList.toggle('hidden');
+                    });
+                });
+            } catch (e) {
+                container.innerHTML = `<p style="color:red;">Error: ${e.message}</p>`;
+            }
+        }
+
+        async function openVerifyPopup(itemId) {
+            const statusEl = document.getElementById('verifyStatusMessage');
+            const answerInput = document.getElementById('verifyAnswerInput');
+            const questionEl = document.getElementById('verifyQuestionText');
+            const msgEl = document.getElementById('verifyMessage');
+            statusEl.textContent = '';
+            msgEl.textContent = '';
+            answerInput.value = '';
+            answerInput.disabled = false;
+            document.getElementById('submitVerifyBtn').disabled = false;
+            try {
+                const query = new Parse.Query(Parse.Object.extend("LostItem"));
+                const item = await query.get(itemId);
+                if (item.get("verificationBlocked")) {
+                    statusEl.textContent = '⛔ Permanently blocked.';
+                    answerInput.disabled = true;
+                    document.getElementById('submitVerifyBtn').disabled = true;
+                } else {
+                    const nextAllowed = item.get("nextAttemptAllowedAt");
+                    if (nextAllowed && new Date() < new Date(nextAllowed)) {
+                        const diffMs = new Date(nextAllowed) - new Date();
+                        const hrs = Math.floor(diffMs / 3600000);
+                        const mins = Math.floor((diffMs % 3600000) / 60000);
+                        statusEl.textContent = `⏳ Cooldown: ${hrs}h ${mins}m remaining.`;
                         answerInput.disabled = true;
                         document.getElementById('submitVerifyBtn').disabled = true;
                     } else {
-                        const nextAllowed = item.get("nextAttemptAllowedAt");
-                        if (nextAllowed && new Date() < new Date(nextAllowed)) {
-                            const diffMs = new Date(nextAllowed) - new Date();
-                            const hrs = Math.floor(diffMs / 3600000);
-                            const mins = Math.floor((diffMs % 3600000) / 60000);
-                            statusEl.textContent =
-                                `⏳ Cooldown: ${hrs}h ${mins}m remaining.`;
+                        const attempts = item.get("verificationAttempts") || 0;
+                        if (attempts >= 9) {
+                            statusEl.textContent = 'Too many attempts – blocked.';
                             answerInput.disabled = true;
                             document.getElementById('submitVerifyBtn').disabled = true;
-                        } else {
-                            const attempts = item.get("verificationAttempts") || 0;
-                            if (attempts >= 9) {
-                                statusEl.textContent = 'Too many attempts – blocked.';
-                                answerInput.disabled = true;
-                                document.getElementById('submitVerifyBtn').disabled = true;
-                            } else if (attempts >= 6) {
-                                statusEl.textContent =
-                                    `⚠️ ${attempts} wrong attempts. Next lock: 5h.`;
-                            } else if (attempts >= 3) {
-                                statusEl.textContent =
-                                    `⚠️ ${attempts} wrong. Cooldown after 3rd.`;
-                            }
-                        }
+                        } else if (attempts >= 6) statusEl.textContent = `⚠️ ${attempts} wrong attempts. Next lock: 5h.`;
+                        else if (attempts >= 3) statusEl.textContent = `⚠️ ${attempts} wrong. Cooldown after 3rd.`;
                     }
-                    const question = await getVerificationQuestion(itemId);
-                    questionEl.textContent = '🔐 ' + (question || 'No question set');
-                    verifyPopup.classList.remove('hidden');
-                } catch (e) {
-                    alert('Error loading verification: ' + e.message);
                 }
+                const question = await getVerificationQuestion(itemId);
+                questionEl.textContent = '🔐 ' + (question || 'No question set');
+                verifyPopup.classList.remove('hidden');
+            } catch (e) {
+                alert('Error loading verification: ' + e.message);
             }
+        }
 
-            document.getElementById('cancelVerifyBtn').addEventListener('click', () => {
-                verifyPopup.classList.add('hidden');
-                currentVerifyingItemId = null;
-            });
+        document.getElementById('cancelVerifyBtn')?.addEventListener('click', () => {
+            verifyPopup.classList.add('hidden');
+            currentVerifyingItemId = null;
+        });
 
-            document.getElementById('submitVerifyBtn').addEventListener('click', async () => {
-                if (!currentVerifyingItemId) return;
-                const answer = document.getElementById('verifyAnswerInput').value.trim();
-                if (!answer) return;
-
-                const statusEl = document.getElementById('verifyStatusMessage');
-                const msgEl = document.getElementById('verifyMessage');
-                const answerInput = document.getElementById('verifyAnswerInput');
-                const submitBtn = document.getElementById('submitVerifyBtn');
-
-                try {
-                    const result = await verifyItem(currentVerifyingItemId, answer);
-                    msgEl.textContent = result.message || '';
-
-                    if (result.success) {
+        document.getElementById('submitVerifyBtn')?.addEventListener('click', async () => {
+            if (!currentVerifyingItemId) return;
+            const answer = document.getElementById('verifyAnswerInput').value.trim();
+            if (!answer) return;
+            const statusEl = document.getElementById('verifyStatusMessage');
+            const msgEl = document.getElementById('verifyMessage');
+            const answerInput = document.getElementById('verifyAnswerInput');
+            const submitBtn = document.getElementById('submitVerifyBtn');
+            try {
+                const result = await verifyItem(currentVerifyingItemId, answer);
+                msgEl.textContent = result.message || '';
+                if (result.success) {
+                    answerInput.disabled = true;
+                    submitBtn.disabled = true;
+                    setTimeout(() => {
+                        verifyPopup.classList.add('hidden');
+                        loadLostItems(document.getElementById('lostSearchInput').value);
+                    }, 1500);
+                } else {
+                    if (result.blocked) {
+                        statusEl.textContent = '⛔ Verification permanently blocked.';
                         answerInput.disabled = true;
                         submitBtn.disabled = true;
-                        setTimeout(() => {
-                            verifyPopup.classList.add('hidden');
-                            loadLostItems(document.getElementById('lostSearchInput').value);
-                        }, 1500);
-                    } else {
-                        if (result.blocked) {
-                            statusEl.textContent = '⛔ Verification permanently blocked.';
-                            answerInput.disabled = true;
-                            submitBtn.disabled = true;
-                        } else if (result.cooldownEnd) {
-                            const diffMs = new Date(result.cooldownEnd) - new Date();
-                            if (diffMs > 0) {
-                                const hrs = Math.floor(diffMs / 3600000);
-                                const mins = Math.floor((diffMs % 3600000) / 60000);
-                                statusEl.textContent =
-                                    `⏳ Cooldown: ${hrs}h ${mins}m.`;
-                            }
-                            answerInput.disabled = true;
-                            submitBtn.disabled = true;
-                        } else {
-                            try {
-                                const query = new Parse.Query(Parse.Object.extend(
-                                    "LostItem"));
-                                const item = await query.get(currentVerifyingItemId);
-                                const attempts = item.get("verificationAttempts") || 0;
-                                if (attempts >= 9) {
-                                    statusEl.textContent = 'Blocked.';
-                                    answerInput.disabled = true;
-                                    submitBtn.disabled = true;
-                                } else if (attempts >= 6) {
-                                    statusEl.textContent =
-                                        `⚠️ ${attempts} wrong. 5h lock soon.`;
-                                } else if (attempts >= 3) {
-                                    statusEl.textContent =
-                                        `⚠️ ${attempts} wrong. 3h cooldown soon.`;
-                                } else {
-                                    statusEl.textContent =
-                                        `❌ Wrong. ${3 - attempts} attempts left.`;
-                                }
-                            } catch (e) {}
+                    } else if (result.cooldownEnd) {
+                        const diffMs = new Date(result.cooldownEnd) - new Date();
+                        if (diffMs > 0) {
+                            const hrs = Math.floor(diffMs / 3600000);
+                            const mins = Math.floor((diffMs % 3600000) / 60000);
+                            statusEl.textContent = `⏳ Cooldown: ${hrs}h ${mins}m.`;
                         }
+                        answerInput.disabled = true;
+                        submitBtn.disabled = true;
+                    } else {
+                        const query = new Parse.Query(Parse.Object.extend("LostItem"));
+                        const item = await query.get(currentVerifyingItemId);
+                        const attempts = item.get("verificationAttempts") || 0;
+                        if (attempts >= 9) statusEl.textContent = 'Blocked.';
+                        else if (attempts >= 6) statusEl.textContent = `⚠️ ${attempts} wrong. 5h lock soon.`;
+                        else if (attempts >= 3) statusEl.textContent = `⚠️ ${attempts} wrong. 3h cooldown soon.`;
+                        else statusEl.textContent = `❌ Wrong. ${3 - attempts} attempts left.`;
                     }
-                } catch (e) {
-                    msgEl.textContent = 'Error: ' + e.message;
                 }
-            });
-
-            // Found page type change
-            document.getElementById('foundType').addEventListener('change', (e) => {
-                const type = e.target.value;
-                const qInput = document.getElementById('foundVeriQuestion');
-                document.getElementById('foundVeriAnswer').value = '';
-                if (type === 'electronic') {
-                    qInput.value = 'What is the wallpaper of this device?';
-                    qInput.placeholder = 'Wallpaper description';
-                } else {
-                    qInput.value = '';
-                    qInput.placeholder = 'Your custom verification question';
-                }
-            });
-            document.getElementById('foundType').dispatchEvent(new Event('change'));
-
-            document.getElementById('submitFoundBtn').addEventListener('click', async () => {
-                const type = document.getElementById('foundType').value;
-                const color = document.getElementById('foundColor').value.trim();
-                const model = document.getElementById('foundModel').value.trim();
-                const appearance = document.getElementById('foundAppearance').value.trim();
-                const description = document.getElementById('foundDescription').value.trim();
-                const time = document.getElementById('foundTime').value;
-                const location = document.getElementById('foundLocation').value.trim();
-                const veriQ = document.getElementById('foundVeriQuestion').value.trim();
-                const veriA = document.getElementById('foundVeriAnswer').value.trim();
-                const contactInfo = document.getElementById('foundContactInfo').value.trim();
-                const photoInput = document.getElementById('foundPhoto');
-                const msg = document.getElementById('foundMessage');
-
-                if (!color || !model || !time || !location || !veriQ || !veriA) {
-                    msg.textContent = '❌ Please fill all required fields.';
-                    return;
-                }
-                let photoFile = null,
-                    photoName = '';
-                if (photoInput.files.length > 0) {
-                    photoFile = photoInput.files[0];
-                    photoName = photoFile.name;
-                }
-                try {
-                    await createFoundItem({
-                        type,
-                        color,
-                        model,
-                        appearance,
-                        description,
-                        timeFound: new Date(time),
-                        locationFound: location,
-                        verificationQuestion: veriQ,
-                        verificationAnswer: veriA,
-                        contactInfo,
-                        photoFile,
-                        photoName
-                    });
-                    msg.textContent = '✅ Item posted! Thank you.';
-                    document.getElementById('foundColor').value = '';
-                    document.getElementById('foundModel').value = '';
-                    document.getElementById('foundAppearance').value = '';
-                    document.getElementById('foundDescription').value = '';
-                    document.getElementById('foundLocation').value = '';
-                    document.getElementById('foundVeriAnswer').value = '';
-                    document.getElementById('foundContactInfo').value = '';
-                    document.getElementById('foundPhoto').value = '';
-                    document.getElementById('foundType').dispatchEvent(new Event('change'));
-                } catch (e) {
-                    msg.textContent = '❌ Error: ' + e.message;
-                }
-            });
-
-            checkSession();
+            } catch (e) {
+                msgEl.textContent = 'Error: ' + e.message;
+            }
         });
-    </script>
 
-    <!-- Dino Jump Game Script -->
-    <script>
-        (function() {
-            const cv = document.getElementById('dc');
-            const ctx = cv.getContext('2d');
-            const scEl = document.getElementById('dsc');
-            const hiEl = document.getElementById('dhi');
-            const msg = document.getElementById('dm');
-            const gamePage = document.getElementById('dinoGamePage');
-            const W = 700,
-                H = 130,
-                GR = 100;
-            let d, ca, sc, hi = 0,
-                spd, st, lt, fs;
-            let currentRaf = null;
+        // Found page type helper
+        document.getElementById('foundType')?.addEventListener('change', (e) => {
+            const type = e.target.value;
+            const qInput = document.getElementById('foundVeriQuestion');
+            document.getElementById('foundVeriAnswer').value = '';
+            if (type === 'electronic') qInput.value = 'What is the wallpaper of this device?';
+            else qInput.value = '';
+        });
+        document.getElementById('foundType')?.dispatchEvent(new Event('change'));
 
-            function reset() {
-                d = { x: 60, y: GR, w: 22, h: 26, vy: 0, jmp: false, fr: 0, ft: 0 };
-                ca = [];
-                sc = 0;
-                fs = 0;
-                spd = 4;
-                st = 'idle';
-                lt = null;
+        document.getElementById('submitFoundBtn')?.addEventListener('click', async () => {
+            const type = document.getElementById('foundType').value;
+            const color = document.getElementById('foundColor').value.trim();
+            const model = document.getElementById('foundModel').value.trim();
+            const appearance = document.getElementById('foundAppearance').value.trim();
+            const description = document.getElementById('foundDescription').value.trim();
+            const time = document.getElementById('foundTime').value;
+            const location = document.getElementById('foundLocation').value.trim();
+            const veriQ = document.getElementById('foundVeriQuestion').value.trim();
+            const veriA = document.getElementById('foundVeriAnswer').value.trim();
+            const contactInfo = document.getElementById('foundContactInfo').value.trim();
+            const photoInput = document.getElementById('foundPhoto');
+            const msg = document.getElementById('foundMessage');
+            if (!color || !model || !time || !location || !veriQ || !veriA) {
+                msg.textContent = '❌ Please fill all required fields.';
+                return;
             }
-
-            function jump() {
-                if (!gamePage || !gamePage.classList.contains('hidden')) {
-                    if (st === 'idle' || st === 'dead') {
-                        start();
-                        return;
-                    }
-                    if (!d.jmp) {
-                        d.vy = -11;
-                        d.jmp = true;
-                    }
-                }
+            let photoFile = null, photoName = '';
+            if (photoInput.files.length > 0) {
+                photoFile = photoInput.files[0];
+                photoName = photoFile.name;
             }
-
-            function start() {
-                st = 'running';
-                msg.textContent = '';
-                d.jmp = false;
-                d.vy = 0;
-                d.y = GR;
-                ca = [];
-                sc = 0;
-                fs = 0;
-                spd = 4;
-                lt = null;
-                if (currentRaf) cancelAnimationFrame(currentRaf);
-                currentRaf = requestAnimationFrame(loop);
+            try {
+                await createFoundItem({ type, color, model, appearance, description, timeFound: new Date(time), locationFound: location, verificationQuestion: veriQ, verificationAnswer: veriA, contactInfo, photoFile, photoName });
+                msg.textContent = '✅ Item posted! Thank you.';
+                document.getElementById('foundColor').value = '';
+                document.getElementById('foundModel').value = '';
+                document.getElementById('foundAppearance').value = '';
+                document.getElementById('foundDescription').value = '';
+                document.getElementById('foundLocation').value = '';
+                document.getElementById('foundVeriAnswer').value = '';
+                document.getElementById('foundContactInfo').value = '';
+                document.getElementById('foundPhoto').value = '';
+                document.getElementById('foundType').dispatchEvent(new Event('change'));
+            } catch (e) {
+                msg.textContent = '❌ Error: ' + e.message;
             }
+        });
 
-            function loop(ts) {
-                // Check if game page is hidden — if so, pause and clean up
-                if (gamePage && gamePage.classList.contains('hidden')) {
-                    if (currentRaf) {
-                        cancelAnimationFrame(currentRaf);
-                        currentRaf = null;
-                    }
-                    st = 'idle';
-                    msg.textContent = 'Press space / tap to start';
+        checkSession();
+    });
+</script>
+
+<!-- DINO GAME SCRIPT (unchanged but enhanced style) -->
+<script>
+    (function() {
+        const cv = document.getElementById('dc');
+        if (!cv) return;
+        const ctx = cv.getContext('2d');
+        const scEl = document.getElementById('dsc');
+        const hiEl = document.getElementById('dhi');
+        const msg = document.getElementById('dm');
+        const gamePage = document.getElementById('dinoGamePage');
+        const W = 700, H = 130, GR = 100;
+        let d, ca, sc, hi = 0, spd, st, lt, fs;
+        let currentRaf = null;
+        function reset() {
+            d = { x: 60, y: GR, w: 22, h: 26, vy: 0, jmp: false, fr: 0, ft: 0 };
+            ca = []; sc = 0; fs = 0; spd = 4; st = 'idle'; lt = null;
+        }
+        function jump() {
+            if (!gamePage || !gamePage.classList.contains('hidden')) {
+                if (st === 'idle' || st === 'dead') { start(); return; }
+                if (!d.jmp) { d.vy = -11; d.jmp = true; }
+            }
+        }
+        function start() {
+            st = 'running'; msg.textContent = ''; d.jmp = false; d.vy = 0; d.y = GR; ca = []; sc = 0; fs = 0; spd = 4; lt = null;
+            if (currentRaf) cancelAnimationFrame(currentRaf);
+            currentRaf = requestAnimationFrame(loop);
+        }
+        function loop(ts) {
+            if (gamePage && gamePage.classList.contains('hidden')) {
+                if (currentRaf) { cancelAnimationFrame(currentRaf); currentRaf = null; }
+                st = 'idle'; msg.textContent = 'Press space / tap to start';
+                return;
+            }
+            if (!lt) lt = ts;
+            const dt = Math.min((ts - lt) / 16.67, 3);
+            lt = ts;
+            ctx.clearRect(0, 0, W, H);
+            const col = '#1f2e3a';
+            d.vy += 0.6 * dt;
+            d.y += d.vy * dt;
+            if (d.y >= GR) { d.y = GR; d.vy = 0; d.jmp = false; }
+            d.ft += dt;
+            if (d.ft > 8) { d.fr++; d.ft = 0; }
+            fs += dt;
+            if (fs >= 5) { sc += Math.floor(fs / 5); fs %= 5; }
+            spd = 4 + sc * 0.012;
+            if (Math.random() < 0.012 * dt && (ca.length === 0 || ca[ca.length - 1].x < W - 180)) {
+                const h = 20 + Math.random() * 22, w = 10 + Math.random() * 8;
+                ca.push({ x: W, w, h, y: GR + 26 - h });
+            }
+            for (let i = ca.length - 1; i >= 0; i--) {
+                ca[i].x -= spd * dt;
+                if (ca[i].x + ca[i].w < 0) { ca.splice(i,1); continue; }
+                if (d.x + d.w - 4 > ca[i].x + 2 && d.x + 4 < ca[i].x + ca[i].w - 2 && d.y + d.h > ca[i].y + 2) {
+                    st = 'dead';
+                    if (sc > hi) { hi = sc; hiEl.textContent = hi; }
+                    scEl.textContent = sc;
+                    msg.textContent = 'Game over — tap / space to restart';
+                    currentRaf = null;
                     return;
                 }
-
-                if (!lt) lt = ts;
-                const dt = Math.min((ts - lt) / 16.67, 3);
-                lt = ts;
-                ctx.clearRect(0, 0, W, H);
-                const col = '#333';
-                d.vy += 0.6 * dt;
-                d.y += d.vy * dt;
-                if (d.y >= GR) { d.y = GR;
-                    d.vy = 0;
-                    d.jmp = false; }
-                d.ft += dt;
-                if (d.ft > 8) { d.fr++;
-                    d.ft = 0; }
-                fs += dt;
-                if (fs >= 5) { sc += Math.floor(fs / 5);
-                    fs %= 5; }
-                spd = 4 + sc * 0.012;
-                if (Math.random() < 0.012 * dt && (ca.length === 0 || ca[ca.length - 1].x < W - 180)) {
-                    const h = 20 + Math.random() * 22,
-                        w = 10 + Math.random() * 8;
-                    ca.push({ x: W, w, h, y: GR + 26 - h });
-                }
-                for (let i = ca.length - 1; i >= 0; i--) {
-                    ca[i].x -= spd * dt;
-                    if (ca[i].x + ca[i].w < 0) { ca.splice(i, 1); continue; }
-                    if (d.x + d.w - 4 > ca[i].x + 2 && d.x + 4 < ca[i].x + ca[i].w - 2 && d.y + d.h > ca[i].y +
-                        2) {
-                        st = 'dead';
-                        if (sc > hi) { hi = sc;
-                            hiEl.textContent = hi; }
-                        scEl.textContent = sc;
-                        msg.textContent = 'Game over — press space / tap to restart';
-                        currentRaf = null;
-                        return;
-                    }
-                    ctx.fillStyle = col;
-                    ctx.fillRect(ca[i].x, ca[i].y, ca[i].w, ca[i].h);
-                    ctx.fillRect(ca[i].x - 5, ca[i].y + 6, 5, 4);
-                    ctx.fillRect(ca[i].x - 5, ca[i].y + 2, 3, 8);
-                    ctx.fillRect(ca[i].x + ca[i].w, ca[i].y + 8, 5, 4);
-                    ctx.fillRect(ca[i].x + ca[i].w + 2, ca[i].y + 4, 3, 8);
-                }
                 ctx.fillStyle = col;
-                ctx.fillRect(d.x, d.y, d.w, d.h);
-                ctx.fillRect(d.x + d.w - 6, d.y - 6, 10, 8);
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(d.x + d.w + 1, d.y - 5, 3, 3);
-                ctx.fillStyle = col;
-                if (!d.jmp) {
-                    ctx.fillRect(d.x + 4, d.y + d.h, 5, 8);
-                    ctx.fillRect(d.x + 12, d.y + d.h, 5, d.fr % 2 === 0 ? 8 : 4);
-                } else {
-                    ctx.fillRect(d.x + 4, d.y + d.h, 5, 6);
-                    ctx.fillRect(d.x + 12, d.y + d.h, 5, 6);
-                }
-                ctx.fillRect(d.x - 6, d.y + 8, 8, 4);
-                scEl.textContent = sc;
-                currentRaf = requestAnimationFrame(loop);
+                ctx.fillRect(ca[i].x, ca[i].y, ca[i].w, ca[i].h);
             }
-
-            // Expose stop function for page navigation
-            window.stopDinoGame = function() {
-                if (currentRaf) {
-                    cancelAnimationFrame(currentRaf);
-                    currentRaf = null;
-                }
-                st = 'idle';
-                msg.textContent = 'Press space / tap to start';
-            };
-
-            reset();
-
-            document.addEventListener('keydown', e => {
-                if (e.code === 'Space') {
-                    // Only respond if game page is visible
-                    if (gamePage && gamePage.classList.contains('hidden')) return;
-                    e.preventDefault();
-                    jump();
-                }
-            });
-
-            cv.addEventListener('click', jump);
-            cv.addEventListener('touchstart', e => {
-                if (gamePage && gamePage.classList.contains('hidden')) return;
-                e.preventDefault();
-                jump();
-            }, { passive: false });
-        })();
-    </script>
+            ctx.fillStyle = col;
+            ctx.fillRect(d.x, d.y, d.w, d.h);
+            ctx.fillRect(d.x + d.w - 6, d.y - 6, 10, 8);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(d.x + d.w + 1, d.y - 5, 3, 3);
+            ctx.fillStyle = col;
+            if (!d.jmp) {
+                ctx.fillRect(d.x + 4, d.y + d.h, 5, 8);
+                ctx.fillRect(d.x + 12, d.y + d.h, 5, d.fr % 2 === 0 ? 8 : 4);
+            } else {
+                ctx.fillRect(d.x + 4, d.y + d.h, 5, 6);
+                ctx.fillRect(d.x + 12, d.y + d.h, 5, 6);
+            }
+            ctx.fillRect(d.x - 6, d.y + 8, 8, 4);
+            scEl.textContent = sc;
+            currentRaf = requestAnimationFrame(loop);
+        }
+        window.stopDinoGame = function() { if (currentRaf) { cancelAnimationFrame(currentRaf); currentRaf = null; } st = 'idle'; msg.textContent = 'Press space / tap to start'; };
+        reset();
+        document.addEventListener('keydown', e => { if (e.code === 'Space' && gamePage && !gamePage.classList.contains('hidden')) { e.preventDefault(); jump(); } });
+        cv.addEventListener('click', jump);
+        cv.addEventListener('touchstart', e => { if (gamePage && !gamePage.classList.contains('hidden')) { e.preventDefault(); jump(); } });
+    })();
+</script>
 </body>
 </html>
