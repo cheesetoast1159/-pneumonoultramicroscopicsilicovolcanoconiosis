@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>🔍 Lost & Found | Triangle Transition</title>
+    <title>🔍 Lost & Found | Full‑Cover Triangle Transition</title>
     <script src="https://unpkg.com/parse@5.3.0/dist/parse.min.js"></script>
     <style>
         * {
@@ -13,22 +13,13 @@
         }
 
         :root {
-            --bg-gradient: radial-gradient(circle at 10% 30%, #16222e, #0f1a24);
-            --card-bg: rgba(20, 28, 38, 0.92);
             --primary: #f39c12;
             --primary-dark: #e67e22;
-            --primary-light: #f1c40f;
             --accent: #e74c3c;
-            --text: #f5f7fa;
-            --text-light: #b0c4de;
-            --border: rgba(243,156,18,0.3);
-            --shadow-lg: 0 25px 45px rgba(0,0,0,0.7);
-            --radius-card: 28px;
-            --radius-button: 20px;
         }
 
         body {
-            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background: #0a0f16;
             min-height: 100vh;
             display: flex;
@@ -105,7 +96,7 @@
             display: none !important;
         }
 
-        /* TRIANGLE LOADING CURTAIN */
+        /* ========= TRIANGLE CURTAIN – FULL COVERAGE ========= */
         .triangle-curtain {
             position: fixed;
             top: 0;
@@ -123,47 +114,98 @@
         }
         .triangle {
             position: absolute;
-            width: 0;
-            height: 0;
-            background: transparent;
-            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease;
+            transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease;
             will-change: transform;
         }
-        /* Each triangle defined with clip-path and background */
-        .triangle-1 { top: 0; left: 0; width: 100%; height: 100%; background: #1a1f2c; clip-path: polygon(0 0, 100% 0, 0 100%); transform: translateX(-100%); }
-        .triangle-2 { top: 0; right: 0; width: 100%; height: 100%; background: #2c2f3a; clip-path: polygon(100% 0, 100% 100%, 0 100%); transform: translateX(100%); }
-        .triangle-3 { top: 50%; left: 50%; width: 120%; height: 120%; background: #f39c12; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); transform: translate(-50%, -50%) scale(0); opacity: 0; border-radius: 0; }
-        
-        /* Additional smaller triangles for flair */
-        .triangle-4, .triangle-5, .triangle-6 {
-            background: rgba(243,156,18,0.3);
-            width: 80px;
-            height: 80px;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            position: absolute;
-            transition: transform 1s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.6s;
+        /* Left triangle – covers left half + more */
+        .triangle-1 {
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: #1a1f2c;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+            transform: translateX(-100%) rotate(0deg);
         }
-        .triangle-4 { bottom: 10%; left: 5%; transform: rotate(15deg) scale(0); }
-        .triangle-5 { top: 15%; right: 8%; transform: rotate(-25deg) scale(0); width: 120px; height: 120px; background: rgba(231,76,60,0.4);}
-        .triangle-6 { bottom: 20%; right: 20%; transform: rotate(45deg) scale(0); width: 60px; height: 60px; background: rgba(241,196,15,0.5);}
+        /* Right triangle – covers right half + more */
+        .triangle-2 {
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: #2c2f3a;
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+            transform: translateX(100%) rotate(0deg);
+        }
+        /* Center golden triangle – fills any diagonal gap */
+        .triangle-3 {
+            top: 50%;
+            left: 50%;
+            width: 150%;
+            height: 150%;
+            background: #f39c12;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+        /* decorative small triangles for flair */
+        .triangle-4, .triangle-5, .triangle-6 {
+            width: 100px;
+            height: 100px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            opacity: 0;
+            transform: scale(0);
+            transition: transform 0.8s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.6s;
+        }
+        .triangle-4 { bottom: 5%; left: 5%; background: rgba(243,156,18,0.5); }
+        .triangle-5 { top: 10%; right: 8%; width: 140px; height: 140px; background: rgba(231,76,60,0.5); }
+        .triangle-6 { bottom: 15%; right: 15%; width: 70px; height: 70px; background: rgba(241,196,15,0.6); }
 
-        /* Animation states: cover */
-        .triangle-curtain.cover .triangle-1 { transform: translateX(0); transition-delay: 0s; }
-        .triangle-curtain.cover .triangle-2 { transform: translateX(0); transition-delay: 0.1s; }
-        .triangle-curtain.cover .triangle-3 { transform: translate(-50%, -50%) scale(2); opacity: 1; transition-delay: 0.2s; }
-        .triangle-curtain.cover .triangle-4, 
+        /* COVER STATE – triangles slide in and expand */
+        .triangle-curtain.cover .triangle-1 {
+            transform: translateX(0) rotate(0deg);
+            transition-delay: 0s;
+        }
+        .triangle-curtain.cover .triangle-2 {
+            transform: translateX(0) rotate(0deg);
+            transition-delay: 0.1s;
+        }
+        .triangle-curtain.cover .triangle-3 {
+            transform: translate(-50%, -50%) scale(1.8);
+            opacity: 1;
+            transition-delay: 0.2s;
+        }
+        .triangle-curtain.cover .triangle-4,
         .triangle-curtain.cover .triangle-5,
-        .triangle-curtain.cover .triangle-6 { transform: rotate(0deg) scale(1); opacity: 1; transition-delay: 0.3s; }
+        .triangle-curtain.cover .triangle-6 {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+            transition-delay: 0.3s;
+        }
 
-        /* Animation states: slide out */
-        .triangle-curtain.slideout .triangle-1 { transform: translateX(-150%); transition-delay: 0s; }
-        .triangle-curtain.slideout .triangle-2 { transform: translateX(150%); transition-delay: 0.05s; }
-        .triangle-curtain.slideout .triangle-3 { transform: translate(-50%, -50%) scale(0); opacity: 0; transition-delay: 0.1s; }
+        /* SLIDEOUT STATE – triangles disappear off-screen */
+        .triangle-curtain.slideout .triangle-1 {
+            transform: translateX(-150%) rotate(-10deg);
+            transition-delay: 0s;
+        }
+        .triangle-curtain.slideout .triangle-2 {
+            transform: translateX(150%) rotate(10deg);
+            transition-delay: 0.05s;
+        }
+        .triangle-curtain.slideout .triangle-3 {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition-delay: 0.1s;
+        }
         .triangle-curtain.slideout .triangle-4,
         .triangle-curtain.slideout .triangle-5,
-        .triangle-curtain.slideout .triangle-6 { transform: scale(0) rotate(30deg); opacity: 0; transition-delay: 0.15s; }
+        .triangle-curtain.slideout .triangle-6 {
+            transform: scale(0) rotate(40deg);
+            opacity: 0;
+            transition-delay: 0.15s;
+        }
 
-        /* other existing styles (buttons, cards, etc) */
+        /* other UI styles (unchanged, keep consistent) */
         h2 {
             font-size: 32px;
             font-weight: 800;
@@ -171,31 +213,18 @@
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .card {
-            background: rgba(25, 35, 50, 0.85);
-            backdrop-filter: blur(8px);
-            border-radius: var(--radius-card);
-            padding: 18px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            border: 1px solid rgba(243,156,18,0.4);
-            transition: all 0.3s ease;
-        }
-        .card:hover { transform: scale(1.01) translateY(-5px); border-color: var(--primary); }
         button {
             background: linear-gradient(95deg, var(--primary-dark), var(--primary));
             border: none;
             padding: 14px 20px;
             font-weight: bold;
-            font-size: 16px;
-            border-radius: var(--radius-button);
+            border-radius: 20px;
             color: #0a0f16;
             cursor: pointer;
-            transition: all 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+            transition: transform 0.1s ease;
         }
         button:active { transform: scale(0.96); }
         .verify-btn { background: linear-gradient(95deg, #e74c3c, #c0392b); color: white; }
@@ -206,9 +235,14 @@
             border-radius: 24px;
             background: rgba(0,0,0,0.6);
             color: white;
-            transition: 0.2s;
         }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(243,156,18,0.3); }
+        input:focus { border-color: #f39c12; outline: none; }
+        .card {
+            background: rgba(25, 35, 50, 0.85);
+            border-radius: 28px;
+            padding: 18px;
+            border: 1px solid rgba(243,156,18,0.4);
+        }
         .verify-popup {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -222,7 +256,7 @@
         .verify-popup.hidden { display: none; }
         .popup-content {
             background: #1a1f2c;
-            border-radius: 56px 24px 56px 24px;
+            border-radius: 48px 24px 48px 24px;
             padding: 32px;
             max-width: 380px;
             width: 90%;
@@ -241,15 +275,11 @@
             padding: 20px;
         }
         canvas { border-radius: 20px; box-shadow: 0 0 0 2px #f39c12; }
-        @media (max-width: 480px) {
-            .page { padding: 20px 16px; }
-            h2 { font-size: 26px; }
-        }
     </style>
 </head>
 <body>
 <div class="app-container" id="appContainer">
-    <!-- pages same as before -->
+    <!-- LOGIN PAGE -->
     <div id="loginPage" class="page">
         <h2>🔥 WELCOME</h2>
         <div id="loginForm" style="display:flex; flex-direction:column; gap:15px;">
@@ -266,6 +296,8 @@
         </div>
         <p id="authMessage" style="color:#e74c3c; text-align:center;"></p>
     </div>
+
+    <!-- HOME PAGE -->
     <div id="homePage" class="page hidden">
         <h2>🏆 DASHBOARD</h2>
         <p>Welcome, <strong id="displayUsername" style="color:#f39c12;">...</strong>!</p>
@@ -274,6 +306,8 @@
         <button id="goDinoGameBtn">🦖 DINO JUMP</button>
         <button id="logoutFromHomeBtn" style="background:#9b2c1d;">🚪 LOG OUT</button>
     </div>
+
+    <!-- LOST PAGE -->
     <div id="lostPage" class="page hidden">
         <h2>🔎 SEARCH LOST</h2>
         <div style="display:flex; gap:12px;">
@@ -283,9 +317,19 @@
         <div id="lostResults" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:16px;"></div>
         <button id="backToHomeFromLost" style="background:#2c3e50;">BACK</button>
     </div>
+
+    <!-- FOUND PAGE -->
     <div id="foundPage" class="page hidden">
         <h2>📦 REPORT FOUND</h2>
-        <select id="foundType"><option value="electronic">📱 Electronic</option><option value="personal">🎒 Personal</option><option value="clothing">👕 Clothing</option><option value="documents">🪪 Documents</option><option value="keys">🔑 Keys</option><option value="bags">👜 Bags</option><option value="other">📌 Other</option></select>
+        <select id="foundType">
+            <option value="electronic">📱 Electronic</option>
+            <option value="personal">🎒 Personal</option>
+            <option value="clothing">👕 Clothing</option>
+            <option value="documents">🪪 Documents</option>
+            <option value="keys">🔑 Keys</option>
+            <option value="bags">👜 Bags</option>
+            <option value="other">📌 Other</option>
+        </select>
         <input type="text" id="foundColor" placeholder="Color">
         <input type="text" id="foundModel" placeholder="Model/Brand">
         <input type="text" id="foundAppearance" placeholder="Appearance">
@@ -299,6 +343,8 @@
         <button id="backToHomeFromFound" style="background:#2c3e50;">BACK</button>
         <p id="foundMessage"></p>
     </div>
+
+    <!-- DINO GAME PAGE -->
     <div id="dinoGamePage" class="page hidden">
         <h2>🦖 DINO JUMP</h2>
         <div class="dino-game-wrapper">
@@ -310,7 +356,7 @@
     </div>
 </div>
 
-<!-- TRIANGLE LOADING CURTAIN -->
+<!-- TRIANGLE CURTAIN – now with full coverage -->
 <div id="triangleCurtain" class="triangle-curtain">
     <div class="triangle triangle-1"></div>
     <div class="triangle triangle-2"></div>
@@ -320,90 +366,76 @@
     <div class="triangle triangle-6"></div>
 </div>
 
+<!-- VERIFY POPUP -->
+<div id="verifyPopup" class="verify-popup hidden">
+    <div class="popup-content">
+        <h3 style="color:#f39c12;">🔐 VERIFICATION</h3>
+        <p id="verifyQuestionText"></p>
+        <input type="text" id="verifyAnswerInput" placeholder="Your answer">
+        <button id="submitVerifyBtn">CONFIRM</button>
+        <button id="cancelVerifyBtn">CANCEL</button>
+        <p id="verifyMessage"></p>
+    </div>
+</div>
+
 <script src="backend.js"></script>
 <script src="login.js"></script>
 <script>
-    // ==================== TRIANGLE ANIMATION CONTROLLER ====================
-    const curtain = document.getElementById('triangleCurtain');
-    let isAnimating = false;
-    let pendingTransition = null;
+    (function() {
+        // ========== FULL COVERAGE TRIANGLE TRANSITION ==========
+        const curtain = document.getElementById('triangleCurtain');
+        let isAnimating = false;
+        let pendingCallback = null;
 
-    function runTriangleTransition(callback) {
-        if (isAnimating) {
-            pendingTransition = callback;
-            return;
-        }
-        isAnimating = true;
-        // reset classes
-        curtain.classList.remove('cover', 'slideout');
-        // force reflow
-        void curtain.offsetWidth;
-        curtain.classList.add('active', 'cover');
-        // after cover animation completes, start slideout
-        setTimeout(() => {
-            curtain.classList.remove('cover');
-            curtain.classList.add('slideout');
-            setTimeout(() => {
-                curtain.classList.remove('active', 'slideout');
-                isAnimating = false;
-                if (callback) callback();
-                if (pendingTransition) {
-                    const cb = pendingTransition;
-                    pendingTransition = null;
-                    runTriangleTransition(cb);
-                }
-            }, 800); // slideout duration
-        }, 600); // cover duration
-    }
-
-    // Override showPage to use triangle transition
-    const originalShowPage = (function() {
-        // will be defined after pages
-        let pagesMap = {};
-        return function showPageWithTransition(pageId) {
-            const allPages = ['loginPage', 'homePage', 'lostPage', 'foundPage', 'dinoGamePage'];
-            const targetPage = document.getElementById(pageId);
-            if (!targetPage || !targetPage.classList.contains('hidden')) {
-                if (!targetPage.classList.contains('hidden')) return;
+        function runTriangleTransition(callback) {
+            if (isAnimating) {
+                pendingCallback = callback;
+                return;
             }
-            runTriangleTransition(() => {
-                allPages.forEach(id => {
-                    const pg = document.getElementById(id);
-                    if (pg) pg.classList.add('hidden');
-                });
-                targetPage.classList.remove('hidden');
-                // additional load logic if needed (lost items)
-                if (pageId === 'lostPage') loadLostItems('');
-                targetPage.scrollTop = 0;
-            });
-        };
-    })();
+            isAnimating = true;
+            // reset and force reflow
+            curtain.classList.remove('cover', 'slideout', 'active');
+            void curtain.offsetWidth;
+            curtain.classList.add('active', 'cover');
+            // after cover animation, slide out
+            setTimeout(() => {
+                curtain.classList.remove('cover');
+                curtain.classList.add('slideout');
+                setTimeout(() => {
+                    curtain.classList.remove('active', 'slideout');
+                    isAnimating = false;
+                    if (callback) callback();
+                    if (pendingCallback) {
+                        const cb = pendingCallback;
+                        pendingCallback = null;
+                        runTriangleTransition(cb);
+                    }
+                }, 800);
+            }, 700);
+        }
 
-    // attach to global navigation
-    let currentShowPage = null;
-
-    // Setup after DOM
-    document.addEventListener('DOMContentLoaded', () => {
-        // define pages
+        // ========== PAGE NAVIGATION ==========
         const loginPage = document.getElementById('loginPage');
         const homePage = document.getElementById('homePage');
         const lostPage = document.getElementById('lostPage');
         const foundPage = document.getElementById('foundPage');
         const dinoGamePage = document.getElementById('dinoGamePage');
-        
-        function showPage(pageElement) {
-            const pageId = pageElement.id;
-            const allPages = [loginPage, homePage, lostPage, foundPage, dinoGamePage];
-            if (pageElement.classList.contains('hidden') === false) return;
+        const allPages = [loginPage, homePage, lostPage, foundPage, dinoGamePage];
+
+        function showPage(targetPage, extraLoadCallback) {
+            if (targetPage.classList.contains('hidden') === false) return;
             runTriangleTransition(() => {
                 allPages.forEach(p => p.classList.add('hidden'));
-                pageElement.classList.remove('hidden');
-                if (pageId === 'lostPage') loadLostItems('');
-                pageElement.scrollTop = 0;
+                targetPage.classList.remove('hidden');
+                if (extraLoadCallback) extraLoadCallback();
+                targetPage.scrollTop = 0;
+                if (targetPage !== dinoGamePage && typeof window.stopDinoGame === 'function') {
+                    window.stopDinoGame();
+                }
             });
         }
 
-        // auth check
+        // ========== AUTH ==========
         function checkSession() {
             if (auth.getCurrentUser()) {
                 document.getElementById('displayUsername').innerText = auth.getCurrentUser().getUsername();
@@ -413,7 +445,6 @@
             }
         }
 
-        // Login / Signup
         document.getElementById('signInBtn').addEventListener('click', async () => {
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
@@ -441,17 +472,20 @@
             document.getElementById('loginForm').classList.remove('hidden');
         });
 
-        // Navigation
-        document.getElementById('goLostBtn').addEventListener('click', () => showPage(lostPage));
+        // Navigation buttons
+        document.getElementById('goLostBtn').addEventListener('click', () => showPage(lostPage, () => loadLostItems('')));
         document.getElementById('goFoundBtn').addEventListener('click', () => showPage(foundPage));
         document.getElementById('goDinoGameBtn').addEventListener('click', () => showPage(dinoGamePage));
-        document.getElementById('logoutFromHomeBtn').addEventListener('click', async () => { await auth.logOut(); checkSession(); });
+        document.getElementById('logoutFromHomeBtn').addEventListener('click', async () => {
+            await auth.logOut();
+            checkSession();
+        });
         document.getElementById('backToHomeFromLost').addEventListener('click', () => showPage(homePage));
         document.getElementById('backToHomeFromFound').addEventListener('click', () => showPage(homePage));
         document.getElementById('backToHomeFromGame').addEventListener('click', () => showPage(homePage));
         document.getElementById('searchLostBtn').addEventListener('click', () => loadLostItems(document.getElementById('lostSearchInput').value));
 
-        // Load lost items logic (same as before)
+        // ========== LOST ITEMS ==========
         async function loadLostItems(searchTerm) {
             const container = document.getElementById('lostResults');
             container.innerHTML = '<p>🌀 LOADING...</p>';
@@ -460,7 +494,8 @@
                 if (items.length === 0) { container.innerHTML = '<p>No items found.</p>'; return; }
                 container.innerHTML = items.map(item => {
                     const type = item.get('type');
-                    let emoji = { electronic:'📱', personal:'🎒', clothing:'👕', documents:'🪪', keys:'🔑', bags:'👜' }[type] || '📌';
+                    const emojiMap = { electronic:'📱', personal:'🎒', clothing:'👕', documents:'🪪', keys:'🔑', bags:'👜' };
+                    const emoji = emojiMap[type] || '📌';
                     const photo = item.get('photo');
                     const photoUrl = photo ? photo.url() : null;
                     const contact = item.get('contactInfo') || '';
@@ -483,29 +518,32 @@
             } catch(e) { container.innerHTML = '<p>Error loading items.</p>'; }
         }
 
-        // verification popup (simplified)
+        // ========== VERIFICATION ==========
         const verifyPopup = document.getElementById('verifyPopup');
         let currentItemId = null;
         async function openVerifyPopup(itemId) {
             currentItemId = itemId;
-            const q = await getVerificationQuestion(itemId);
-            document.getElementById('verifyQuestionText').innerText = q || 'Question?';
+            const question = await getVerificationQuestion(itemId);
+            document.getElementById('verifyQuestionText').innerText = question || 'Verification question';
             document.getElementById('verifyAnswerInput').value = '';
             verifyPopup.classList.remove('hidden');
         }
-        document.getElementById('submitVerifyBtn')?.addEventListener('click', async () => {
+        document.getElementById('submitVerifyBtn').addEventListener('click', async () => {
             const ans = document.getElementById('verifyAnswerInput').value.trim();
             if (!ans) return;
-            const res = await verifyItem(currentItemId, ans);
-            document.getElementById('verifyMessage').innerText = res.message;
-            if (res.success) {
-                setTimeout(() => { verifyPopup.classList.add('hidden'); loadLostItems(''); }, 1000);
+            const result = await verifyItem(currentItemId, ans);
+            document.getElementById('verifyMessage').innerText = result.message;
+            if (result.success) {
+                setTimeout(() => {
+                    verifyPopup.classList.add('hidden');
+                    loadLostItems(document.getElementById('lostSearchInput').value);
+                }, 1000);
             }
         });
-        document.getElementById('cancelVerifyBtn')?.addEventListener('click', () => verifyPopup.classList.add('hidden'));
+        document.getElementById('cancelVerifyBtn').addEventListener('click', () => verifyPopup.classList.add('hidden'));
 
-        // found item submit
-        document.getElementById('submitFoundBtn')?.addEventListener('click', async () => {
+        // ========== FOUND ITEM SUBMIT ==========
+        document.getElementById('submitFoundBtn').addEventListener('click', async () => {
             const type = document.getElementById('foundType').value;
             const color = document.getElementById('foundColor').value.trim();
             const model = document.getElementById('foundModel').value.trim();
@@ -521,64 +559,93 @@
                 document.getElementById('foundMessage').innerText = 'Fill required fields.';
                 return;
             }
-            await createFoundItem({ type, color, model, appearance, description, timeFound: new Date(time), locationFound: location, verificationQuestion: veriQ, verificationAnswer: veriA, contactInfo, photoFile, photoName: photoFile?.name });
+            await createFoundItem({
+                type, color, model, appearance, description,
+                timeFound: new Date(time), locationFound: location,
+                verificationQuestion: veriQ, verificationAnswer: veriA,
+                contactInfo, photoFile, photoName: photoFile?.name
+            });
             document.getElementById('foundMessage').innerText = 'Item posted!';
             setTimeout(() => document.getElementById('foundMessage').innerText = '', 2000);
+            document.getElementById('foundColor').value = '';
+            document.getElementById('foundModel').value = '';
+            document.getElementById('foundAppearance').value = '';
+            document.getElementById('foundDescription').value = '';
+            document.getElementById('foundLocation').value = '';
+            document.getElementById('foundVeriAnswer').value = '';
+            document.getElementById('foundContactInfo').value = '';
+            document.getElementById('foundPhoto').value = '';
         });
 
-        // dino game init (simplified - keep as is)
+        // ========== DINO GAME ==========
         (function initDino() {
-            const cv = document.getElementById('dc'); if(!cv) return;
+            const cv = document.getElementById('dc');
+            if (!cv) return;
             const ctx = cv.getContext('2d');
             const scEl = document.getElementById('dsc'), hiEl = document.getElementById('dhi');
             const msgP = document.getElementById('dm');
-            const W=700, H=130, GR=100;
-            let d, ca, sc, hi=0, spd, st, lt, fs, raf;
-            function reset(){ d={x:60,y:GR,w:22,h:26,vy:0,jmp:false,fr:0,ft:0}; ca=[]; sc=0; fs=0; spd=4; st='idle'; lt=null; }
-            function jump(){ if(st==='idle'||st==='dead')start(); else if(!d.jmp){ d.vy=-11; d.jmp=true; } }
-            function start(){ st='running'; d.jmp=false; d.vy=0; d.y=GR; ca=[]; sc=0; fs=0; spd=4; if(raf)cancelAnimationFrame(raf); raf=requestAnimationFrame(loop); }
-            function loop(ts){
-                if(document.getElementById('dinoGamePage').classList.contains('hidden')){ if(raf)cancelAnimationFrame(raf); st='idle'; return; }
-                if(!lt)lt=ts; let dt=Math.min((ts-lt)/16.67,3); lt=ts;
-                ctx.clearRect(0,0,W,H);
-                d.vy+=0.6*dt; d.y+=d.vy*dt; if(d.y>=GR){ d.y=GR; d.vy=0; d.jmp=false; }
-                d.ft+=dt; if(d.ft>8){ d.fr++; d.ft=0; }
-                fs+=dt; if(fs>=5){ sc+=Math.floor(fs/5); fs%=5; }
-                spd=4+sc*0.012;
-                if(Math.random()<0.012*dt && (ca.length===0||ca[ca.length-1].x<W-180)) ca.push({x:W,w:10+Math.random()*8,h:20+Math.random()*22,y:GR+26-(20+Math.random()*22)});
-                for(let i=ca.length-1;i>=0;i--){
-                    ca[i].x-=spd*dt;
-                    if(ca[i].x+ca[i].w<0){ca.splice(i,1);continue;}
-                    if(d.x+d.w-4>ca[i].x+2 && d.x+4<ca[i].x+ca[i].w-2 && d.y+d.h>ca[i].y+2){
-                        if(sc>hi){hi=sc;hiEl.innerText=hi;}
-                        scEl.innerText=sc; st='dead'; msgP.innerText='GAME OVER'; raf=null; return;
-                    }
-                    ctx.fillStyle='#f39c12'; ctx.fillRect(ca[i].x,ca[i].y,ca[i].w,ca[i].h);
+            const W = 700, H = 130, GR = 100;
+            let d, ca, sc, hi = 0, spd, st, lt, fs, raf;
+            function reset() { d = { x: 60, y: GR, w: 22, h: 26, vy: 0, jmp: false, fr: 0, ft: 0 }; ca = []; sc = 0; fs = 0; spd = 4; st = 'idle'; lt = null; }
+            function jump() { if (st === 'idle' || st === 'dead') start(); else if (!d.jmp) { d.vy = -11; d.jmp = true; } }
+            function start() { st = 'running'; d.jmp = false; d.vy = 0; d.y = GR; ca = []; sc = 0; fs = 0; spd = 4; if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); }
+            function loop(ts) {
+                if (document.getElementById('dinoGamePage').classList.contains('hidden')) { if (raf) cancelAnimationFrame(raf); st = 'idle'; msgP.innerText = 'PRESS SPACE / TAP'; return; }
+                if (!lt) lt = ts;
+                let dt = Math.min((ts - lt) / 16.67, 3);
+                lt = ts;
+                ctx.clearRect(0, 0, W, H);
+                d.vy += 0.6 * dt;
+                d.y += d.vy * dt;
+                if (d.y >= GR) { d.y = GR; d.vy = 0; d.jmp = false; }
+                d.ft += dt;
+                if (d.ft > 8) { d.fr++; d.ft = 0; }
+                fs += dt;
+                if (fs >= 5) { sc += Math.floor(fs / 5); fs %= 5; }
+                spd = 4 + sc * 0.012;
+                if (Math.random() < 0.012 * dt && (ca.length === 0 || ca[ca.length - 1].x < W - 180)) {
+                    const h = 20 + Math.random() * 22, w = 10 + Math.random() * 8;
+                    ca.push({ x: W, w, h, y: GR + 26 - h });
                 }
-                ctx.fillStyle='#f39c12'; ctx.fillRect(d.x,d.y,d.w,d.h); ctx.fillRect(d.x+d.w-6,d.y-6,10,8); ctx.fillStyle='#000'; ctx.fillRect(d.x+d.w+1,d.y-5,3,3);
-                ctx.fillStyle='#f39c12'; if(!d.jmp){ ctx.fillRect(d.x+4,d.y+d.h,5,8); ctx.fillRect(d.x+12,d.y+d.h,5,d.fr%2?8:4); }else{ ctx.fillRect(d.x+4,d.y+d.h,5,6); ctx.fillRect(d.x+12,d.y+d.h,5,6); }
-                ctx.fillRect(d.x-6,d.y+8,8,4);
-                scEl.innerText=sc; raf=requestAnimationFrame(loop);
+                for (let i = ca.length - 1; i >= 0; i--) {
+                    ca[i].x -= spd * dt;
+                    if (ca[i].x + ca[i].w < 0) { ca.splice(i, 1); continue; }
+                    if (d.x + d.w - 4 > ca[i].x + 2 && d.x + 4 < ca[i].x + ca[i].w - 2 && d.y + d.h > ca[i].y + 2) {
+                        if (sc > hi) { hi = sc; hiEl.innerText = hi; }
+                        scEl.innerText = sc;
+                        st = 'dead';
+                        msgP.innerText = 'GAME OVER';
+                        raf = null;
+                        return;
+                    }
+                    ctx.fillStyle = '#f39c12';
+                    ctx.fillRect(ca[i].x, ca[i].y, ca[i].w, ca[i].h);
+                }
+                ctx.fillStyle = '#f39c12';
+                ctx.fillRect(d.x, d.y, d.w, d.h);
+                ctx.fillRect(d.x + d.w - 6, d.y - 6, 10, 8);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(d.x + d.w + 1, d.y - 5, 3, 3);
+                ctx.fillStyle = '#f39c12';
+                if (!d.jmp) {
+                    ctx.fillRect(d.x + 4, d.y + d.h, 5, 8);
+                    ctx.fillRect(d.x + 12, d.y + d.h, 5, d.fr % 2 ? 8 : 4);
+                } else {
+                    ctx.fillRect(d.x + 4, d.y + d.h, 5, 6);
+                    ctx.fillRect(d.x + 12, d.y + d.h, 5, 6);
+                }
+                ctx.fillRect(d.x - 6, d.y + 8, 8, 4);
+                scEl.innerText = sc;
+                raf = requestAnimationFrame(loop);
             }
-            reset(); document.addEventListener('keydown',e=>{if(e.code==='Space' && !document.getElementById('dinoGamePage').classList.contains('hidden')){ e.preventDefault(); jump(); }});
-            cv.addEventListener('click',jump);
-            window.stopDinoGame = ()=>{ if(raf)cancelAnimationFrame(raf); st='idle'; };
+            reset();
+            document.addEventListener('keydown', e => { if (e.code === 'Space' && !document.getElementById('dinoGamePage').classList.contains('hidden')) { e.preventDefault(); jump(); } });
+            cv.addEventListener('click', jump);
+            window.stopDinoGame = () => { if (raf) cancelAnimationFrame(raf); st = 'idle'; msgP.innerText = 'PRESS SPACE / TAP'; };
         })();
 
         checkSession();
-    });
+    })();
 </script>
-
-<!-- verification popup elements (must exist in html) -->
-<div id="verifyPopup" class="verify-popup hidden">
-    <div class="popup-content">
-        <h3 style="color:#f39c12;">🔐 VERIFICATION</h3>
-        <p id="verifyQuestionText"></p>
-        <input type="text" id="verifyAnswerInput" placeholder="Your answer">
-        <button id="submitVerifyBtn">CONFIRM</button>
-        <button id="cancelVerifyBtn">CANCEL</button>
-        <p id="verifyMessage"></p>
-    </div>
-</div>
 </body>
 </html>
