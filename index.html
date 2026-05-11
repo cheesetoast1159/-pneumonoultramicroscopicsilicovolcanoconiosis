@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>🔍 Lost & Found | Ultra‑Slow Triangle Transition</title>
+    <title>🔍 Lost & Found | Blue & White Edition</title>
     <script src="https://unpkg.com/parse@5.3.0/dist/parse.min.js"></script>
     <style>
         * {
@@ -13,14 +13,22 @@
         }
 
         :root {
-            --primary: #f39c12;
-            --primary-dark: #e67e22;
-            --accent: #e74c3c;
+            --primary: #1e88e5;
+            --primary-dark: #0d47a1;
+            --primary-light: #64b5f6;
+            --accent: #039be5;
+            --bg-light: #f0f4fa;
+            --card-bg: #ffffff;
+            --text-dark: #1a2a3a;
+            --text-muted: #4a627a;
+            --border-light: #dce5f0;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.06);
         }
 
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background: #0a0f16;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdef5 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -29,7 +37,7 @@
             overflow-x: hidden;
         }
 
-        /* animated background */
+        /* animated background pattern (light) */
         body::before {
             content: '';
             position: fixed;
@@ -37,9 +45,8 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: repeating-linear-gradient(45deg, rgba(243,156,18,0.03) 0px, rgba(243,156,18,0.03) 3px, transparent 3px, transparent 12px),
-                        radial-gradient(circle at 70% 20%, rgba(231,76,60,0.15) 0%, rgba(0,0,0,0) 60%);
-            animation: slowSpin 40s linear infinite;
+            background: repeating-linear-gradient(45deg, rgba(30,136,229,0.03) 0px, rgba(30,136,229,0.03) 2px, transparent 2px, transparent 10px);
+            animation: slowSpin 60s linear infinite;
             pointer-events: none;
             z-index: 0;
         }
@@ -55,10 +62,10 @@
             max-width: 580px;
             height: 90vh;
             max-height: 850px;
-            background: rgba(10, 18, 28, 0.85);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(2px);
             border-radius: 56px;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 2px rgba(243,156,18,0.3) inset;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(30,136,229,0.2);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -66,7 +73,7 @@
             z-index: 2;
         }
 
-        /* geometric header */
+        /* geometric header – blue gradient */
         .app-container::before {
             content: '';
             position: absolute;
@@ -74,10 +81,10 @@
             left: 0;
             width: 100%;
             height: 140px;
-            background: linear-gradient(125deg, var(--primary), var(--accent));
+            background: linear-gradient(125deg, var(--primary), var(--primary-dark));
             clip-path: polygon(0 0, 100% 0, 100% 60%, 0 95%);
             z-index: 0;
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
         .page {
@@ -96,7 +103,7 @@
             display: none !important;
         }
 
-        /* ========= TRIANGLE CURTAIN – EXTREMELY SLOW ========= */
+        /* ========= BLUE TRIANGLE CURTAIN ========= */
         .triangle-curtain {
             position: fixed;
             top: 0;
@@ -117,27 +124,27 @@
             transition: transform 2.2s cubic-bezier(0.65, 0, 0.35, 1);
             will-change: transform;
         }
-        /* Left triangle – large, slides horizontally from left edge */
+        /* Left triangle – deep blue */
         .triangle-1 {
             top: -20%;
             left: -50%;
             width: 150%;
             height: 140%;
-            background: #1a1f2c;
+            background: #0d47a1;
             clip-path: polygon(0 0, 100% 0, 0 100%);
             transform: translateX(-100%);
         }
-        /* Right triangle – large, slides horizontally from right edge */
+        /* Right triangle – lighter blue */
         .triangle-2 {
             top: -20%;
             right: -50%;
             width: 150%;
             height: 140%;
-            background: #2c2f3a;
+            background: #1976d2;
             clip-path: polygon(100% 0, 100% 100%, 0 100%);
             transform: translateX(100%);
         }
-        /* decorative small triangles – optional, for flair */
+        /* decorative small triangles – white/blue accents */
         .triangle-4, .triangle-5, .triangle-6 {
             width: 100px;
             height: 100px;
@@ -146,11 +153,11 @@
             transform: scale(0);
             transition: transform 1.2s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 1s ease;
         }
-        .triangle-4 { bottom: 5%; left: 5%; background: rgba(243,156,18,0.4); }
-        .triangle-5 { top: 10%; right: 8%; width: 140px; height: 140px; background: rgba(231,76,60,0.4); }
-        .triangle-6 { bottom: 15%; right: 15%; width: 70px; height: 70px; background: rgba(241,196,15,0.5); }
+        .triangle-4 { bottom: 5%; left: 5%; background: rgba(30,136,229,0.5); }
+        .triangle-5 { top: 10%; right: 8%; width: 140px; height: 140px; background: rgba(100,181,246,0.5); }
+        .triangle-6 { bottom: 15%; right: 15%; width: 70px; height: 70px; background: rgba(255,255,255,0.6); }
 
-        /* COVER STATE – side triangles slide inward horizontally, less toward center */
+        /* COVER STATE – slide inward */
         .triangle-curtain.cover .triangle-1 {
             transform: translateX(15%);
             transition-delay: 0s;
@@ -159,7 +166,6 @@
             transform: translateX(-15%);
             transition-delay: 0.1s;
         }
-        /* decorative triangles appear */
         .triangle-curtain.cover .triangle-4,
         .triangle-curtain.cover .triangle-5,
         .triangle-curtain.cover .triangle-6 {
@@ -168,7 +174,7 @@
             transition-delay: 0.3s;
         }
 
-        /* SLIDEOUT STATE – triangles slide back outward */
+        /* SLIDEOUT STATE – slide outward */
         .triangle-curtain.slideout .triangle-1 {
             transform: translateX(-150%);
             transition-delay: 0s;
@@ -185,49 +191,73 @@
             transition-delay: 0.1s;
         }
 
-        /* other UI styles (unchanged) */
+        /* ========= UI ELEMENTS – BLUE & WHITE ========= */
         h2 {
             font-size: 32px;
             font-weight: 800;
-            background: linear-gradient(135deg, #f1c40f, #e67e22, #e74c3c);
+            background: linear-gradient(135deg, #0d47a1, #1e88e5);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
+            letter-spacing: -0.3px;
         }
+
         button {
-            background: linear-gradient(95deg, var(--primary-dark), var(--primary));
+            background: linear-gradient(95deg, var(--primary), var(--primary-dark));
             border: none;
             padding: 14px 20px;
-            font-weight: bold;
-            border-radius: 20px;
-            color: #0a0f16;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 28px;
+            color: white;
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: transform 0.1s ease;
+            text-transform: none;
+            letter-spacing: 0.3px;
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
-        button:active { transform: scale(0.96); }
-        .verify-btn { background: linear-gradient(95deg, #e74c3c, #c0392b); color: white; }
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(13, 71, 161, 0.2);
+        }
+        button:active { transform: scale(0.97); }
+        .verify-btn {
+            background: linear-gradient(95deg, #e53935, #b71c1c);
+            color: white;
+        }
         input, select, textarea {
             width: 100%;
             padding: 13px 18px;
-            border: 2px solid rgba(243,156,18,0.3);
-            border-radius: 24px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-        }
-        input:focus { border-color: #f39c12; outline: none; }
-        .card {
-            background: rgba(25, 35, 50, 0.85);
+            border: 2px solid var(--border-light);
             border-radius: 28px;
-            padding: 18px;
-            border: 1px solid rgba(243,156,18,0.4);
+            background: white;
+            color: var(--text-dark);
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30,136,229,0.2);
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
         }
         .verify-popup {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -235,56 +265,86 @@
         }
         .verify-popup.hidden { display: none; }
         .popup-content {
-            background: #1a1f2c;
+            background: white;
             border-radius: 48px 24px 48px 24px;
             padding: 32px;
             max-width: 380px;
             width: 90%;
-            border: 2px solid #f39c12;
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         .contact-info {
-            background: #2c1e0f;
-            border-left: 8px solid #f39c12;
+            background: #e3f2fd;
+            border-left: 8px solid var(--primary);
             padding: 12px;
             border-radius: 20px;
             margin-top: 8px;
+            color: var(--primary-dark);
         }
         .dino-game-wrapper {
-            background: #000000aa;
+            background: #f8fafc;
             border-radius: 40px;
             padding: 20px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 6px 12px rgba(0,0,0,0.03);
         }
-        canvas { border-radius: 20px; box-shadow: 0 0 0 2px #f39c12; }
+        canvas {
+            border-radius: 20px;
+            box-shadow: 0 0 0 2px var(--primary-light);
+            background: white;
+        }
+        a, .small-btn {
+            color: var(--primary);
+        }
+        .small-btn {
+            background: #eef2fa;
+            border: none;
+            box-shadow: none;
+            color: var(--primary-dark);
+        }
+        #authMessage, #foundMessage, #verifyMessage {
+            color: #d32f2f;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #eef2f8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
 <div class="app-container" id="appContainer">
     <!-- LOGIN PAGE -->
     <div id="loginPage" class="page">
-        <h2>🔥 WELCOME</h2>
+        <h2>🔐 WELCOME</h2>
         <div id="loginForm" style="display:flex; flex-direction:column; gap:15px;">
             <input type="text" id="loginUsername" placeholder="Username">
             <input type="password" id="loginPassword" placeholder="Password">
             <button id="signInBtn">SIGN IN</button>
-            <button id="showSignUpBtn" style="background:#3a546d;">CREATE ACCOUNT</button>
+            <button id="showSignUpBtn" style="background:#cfdfed; color:#0d47a1;">CREATE ACCOUNT</button>
         </div>
         <div id="signUpForm" class="hidden" style="display:flex; flex-direction:column; gap:15px;">
             <input type="text" id="signUpUsername" placeholder="Username">
             <input type="password" id="signUpPassword" placeholder="Password">
             <button id="signUpSubmitBtn">SIGN UP</button>
-            <button id="showLoginBtn" style="background:#3a546d;">BACK</button>
+            <button id="showLoginBtn" style="background:#cfdfed; color:#0d47a1;">BACK</button>
         </div>
-        <p id="authMessage" style="color:#e74c3c; text-align:center;"></p>
+        <p id="authMessage" style="color:#d32f2f; text-align:center;"></p>
     </div>
 
     <!-- HOME PAGE -->
     <div id="homePage" class="page hidden">
-        <h2>🏆 DASHBOARD</h2>
-        <p>Welcome, <strong id="displayUsername" style="color:#f39c12;">...</strong>!</p>
+        <h2>🏠 DASHBOARD</h2>
+        <p>Welcome, <strong id="displayUsername" style="color:#0d47a1;">...</strong>!</p>
         <button id="goLostBtn">🔎 LOST SOMETHING?</button>
         <button id="goFoundBtn">📦 I FOUND AN ITEM</button>
         <button id="goDinoGameBtn">🦖 DINO JUMP</button>
-        <button id="logoutFromHomeBtn" style="background:#9b2c1d;">🚪 LOG OUT</button>
+        <button id="logoutFromHomeBtn" style="background:#b0bec5; color:#1a2a3a;">🚪 LOG OUT</button>
     </div>
 
     <!-- LOST PAGE -->
@@ -292,10 +352,10 @@
         <h2>🔎 SEARCH LOST</h2>
         <div style="display:flex; gap:12px;">
             <input type="text" id="lostSearchInput" placeholder="Search...">
-            <button id="searchLostBtn">FILTER</button>
+            <button id="searchLostBtn" style="flex:0 0 auto;">FILTER</button>
         </div>
         <div id="lostResults" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:16px;"></div>
-        <button id="backToHomeFromLost" style="background:#2c3e50;">BACK</button>
+        <button id="backToHomeFromLost" style="background:#cfdfed; color:#0d47a1;">⬅ BACK</button>
     </div>
 
     <!-- FOUND PAGE -->
@@ -316,11 +376,11 @@
         <textarea id="foundDescription" placeholder="Description" rows="2"></textarea>
         <input type="datetime-local" id="foundTime">
         <input type="text" id="foundLocation" placeholder="Location">
-        <div><label style="color:#f1c40f;">🔐 Verification</label><input type="text" id="foundVeriQuestion" placeholder="Question"><input type="text" id="foundVeriAnswer" placeholder="Answer"></div>
+        <div><label style="color:#0d47a1; font-weight:500;">🔐 Verification</label><input type="text" id="foundVeriQuestion" placeholder="Question"><input type="text" id="foundVeriAnswer" placeholder="Answer"></div>
         <input type="text" id="foundContactInfo" placeholder="Contact (optional)">
         <input type="file" id="foundPhoto" accept="image/*">
         <button id="submitFoundBtn">SUBMIT</button>
-        <button id="backToHomeFromFound" style="background:#2c3e50;">BACK</button>
+        <button id="backToHomeFromFound" style="background:#cfdfed; color:#0d47a1;">⬅ BACK</button>
         <p id="foundMessage"></p>
     </div>
 
@@ -332,11 +392,11 @@
             <canvas id="dc" width="700" height="130"></canvas>
             <p id="dm" style="text-align:center;">PRESS SPACE / TAP</p>
         </div>
-        <button id="backToHomeFromGame" style="background:#2c3e50;">BACK</button>
+        <button id="backToHomeFromGame" style="background:#cfdfed; color:#0d47a1;">⬅ BACK</button>
     </div>
 </div>
 
-<!-- TRIANGLE CURTAIN -->
+<!-- TRIANGLE CURTAIN (blue shades) -->
 <div id="triangleCurtain" class="triangle-curtain">
     <div class="triangle triangle-1"></div>
     <div class="triangle triangle-2"></div>
@@ -348,11 +408,11 @@
 <!-- VERIFY POPUP -->
 <div id="verifyPopup" class="verify-popup hidden">
     <div class="popup-content">
-        <h3 style="color:#f39c12;">🔐 VERIFICATION</h3>
+        <h3 style="color:#0d47a1;">🔐 VERIFICATION</h3>
         <p id="verifyQuestionText"></p>
         <input type="text" id="verifyAnswerInput" placeholder="Your answer">
         <button id="submitVerifyBtn">CONFIRM</button>
-        <button id="cancelVerifyBtn">CANCEL</button>
+        <button id="cancelVerifyBtn" style="background:#cfdfed; color:#0d47a1;">CANCEL</button>
         <p id="verifyMessage"></p>
     </div>
 </div>
@@ -361,7 +421,7 @@
 <script src="login.js"></script>
 <script>
     (function() {
-        // ========== EXTREMELY SLOW TRIANGLE TRANSITION ==========
+        // ========== TRIANGLE TRANSITION ==========
         const curtain = document.getElementById('triangleCurtain');
         let isAnimating = false;
         let pendingCallback = null;
@@ -372,11 +432,9 @@
                 return;
             }
             isAnimating = true;
-            // reset
             curtain.classList.remove('cover', 'slideout', 'active');
             void curtain.offsetWidth;
             curtain.classList.add('active', 'cover');
-            // after cover animation (2.2s transition + a bit of extra), slide out
             setTimeout(() => {
                 curtain.classList.remove('cover');
                 curtain.classList.add('slideout');
@@ -389,8 +447,8 @@
                         pendingCallback = null;
                         runTriangleTransition(cb);
                     }
-                }, 2200); // slideout duration (same as transition)
-            }, 2200); // cover duration (same as transition)
+                }, 2200);
+            }, 2200);
         }
 
         // ========== PAGE NAVIGATION ==========
@@ -597,15 +655,15 @@
                         raf = null;
                         return;
                     }
-                    ctx.fillStyle = '#f39c12';
+                    ctx.fillStyle = '#1e88e5';
                     ctx.fillRect(ca[i].x, ca[i].y, ca[i].w, ca[i].h);
                 }
-                ctx.fillStyle = '#f39c12';
+                ctx.fillStyle = '#1e88e5';
                 ctx.fillRect(d.x, d.y, d.w, d.h);
                 ctx.fillRect(d.x + d.w - 6, d.y - 6, 10, 8);
-                ctx.fillStyle = '#000';
+                ctx.fillStyle = '#fff';
                 ctx.fillRect(d.x + d.w + 1, d.y - 5, 3, 3);
-                ctx.fillStyle = '#f39c12';
+                ctx.fillStyle = '#1e88e5';
                 if (!d.jmp) {
                     ctx.fillRect(d.x + 4, d.y + d.h, 5, 8);
                     ctx.fillRect(d.x + 12, d.y + d.h, 5, d.fr % 2 ? 8 : 4);
